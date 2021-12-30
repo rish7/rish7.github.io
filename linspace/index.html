@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>linspace function in plain Javascript</title>
+    <style type="text/css">
+        div {
+            padding: 10px 0px;
+        }
+
+        label {
+            display: inline-block;
+            width: 150px;
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        button {
+            margin-left: 160px;
+            padding: 10px;
+        }
+        #output{
+            font-family: "Lucida Console", "Courier New", monospace;
+            font-size: 25px;
+            padding: 20px 10px;
+            color: #666;
+        }
+        span{
+            color:#999;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>linspace (<a href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html" title="numpy.linspace" target="_blank">numpy.linspace</a> or <a href="https://js.tensorflow.org/api/latest/#linspace" title="tf.linspace" target="_blank">tf.linspace</a> equivalent in Javascript)</h2>
+    <span>Note: After getting this linspace result, can plot on x and y axis in chart for example.<br/></span>
+    <div><label for="startAt">Start At:</label> <input type="number" id="startAt" name="startAt" value="0" /></div>
+    <div><label for="stopAt">Stop At:</label> <input type="number" id="stopAt" name="stopAt" value="9"/></div>
+    <div><label for="cardinality">Cardinality:</label> <input type="number" id="cardinality" name="cardinality" value="10" /></div>
+    <div><label for="endPoint">End point as StopAt:</label><input type="checkbox" name="endPoint" id="endPoint"
+            value="yes" /></div>
+    <button type="button" onclick="findLinspace()">Calculate linspace</button>
+    <div id="output">
+
+    </div>
+    <script type="text/javascript">
+        function calculateLinspace(start, stop, num, endpoint, toFixed) {
+            const digits = toFixed ? toFixed : 2
+            const div = (endpoint && num !== 1) ? (num - 1) : num;
+            const step = (stop - start) / div;
+            return Array.from({ length: num }, (_, i) => (start + step * i).toFixed(digits));
+        }
+        function findLinspace() {
+            //Fetch value from inputs
+            const startAt = document.getElementById("startAt").value;
+            const stopAt = document.getElementById("stopAt").value;
+            const cardinality = document.getElementById("cardinality").value;
+            const endPoint = document.getElementById("endPoint").checked
+
+            console.log("Inputs ==> ", [startAt, stopAt, cardinality, endPoint].join(", "))
+
+            //Validate user inputs
+            if (isNaN(startAt) || isNaN(stopAt) || isNaN(cardinality)) {
+                document.getElementById("output").innerText = "Please check inputs"
+                return false;
+            }
+
+            if(Number(startAt) === Number(stopAt)){
+                document.getElementById("output").innerText = "Start and Stop both are same"
+                return false;
+            }
+
+            document.getElementById("output").innerText = `[ ${calculateLinspace(Number(startAt), Number(stopAt), parseInt(cardinality), endPoint, 2).join(", ")}  ]`
+
+        }
+    </script>
+</body>
+
+</html>
