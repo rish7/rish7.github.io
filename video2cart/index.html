@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Video to shopping cart - Just for demo</title>
+	<link rel="stylesheet" href="asset/css/style.css" type="text/css" />
+</head>
+
+<body>
+	<section>
+		<article>
+			<h3>How it works</h3>
+			<ul>
+				<li>Play the video, by click on play button.</li>
+				<li>Now play will trun to pause, Just pause the video where you want see cart object in current frame.</li>
+				<li>If any cart objects present in current frame, water mark object will appear top of the video.</li>
+				<li>Click top of those cart objects to go to shopping site.</li>
+				<li>Turn on trace, for finding cart objects while playing itself.</li>
+			</ul>
+			<p> Note :- This is demo programe and it will work only in latest browsers currenlty and screen size 1024 x 768</p>
+			<h2>Demo video</h2>
+			<div id="videoWrapper">
+				<video id="videoTag" width="858" height="432" oncontextmenu="return false;" loop>
+					<source src="asset/videos/1.mp4" type="video/mp4">
+					<source src="asset/videos/1.ogv" type="video/ogg"> Your browser does not support the video tag. Please run this demo in latest browsers.
+				</video>
+				<div id="cartWrapper"></div>
+			</div>
+			<div id="video-controls">
+				<button type="button" id="play-pause">Play ▶︎</button> <span id="showTime"></span> &nbsp; &nbsp; Trace cart objects while playing : <input type="checkbox" id="traceCartObject" />
+			</div>
+		</article>
+	</section>
+	<footer>
+		<p>&copy; Copyright <a href="http://shareourideas.com/" title="Share our ideas - more you share, more you gain by Naga Harish">Naga Harish</a></p>
+	</footer>
+	<script src="asset/js/script.js"></script>
+	<script src="asset/js/frames.js"></script>
+</body>
+
+</html>
