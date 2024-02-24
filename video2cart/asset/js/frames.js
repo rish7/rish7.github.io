@@ -433,18 +433,18 @@ var videoFrames = {
 
 var cartObjects = {
     "1" : {
-        url:"http://www.livastar.com/movies/srimanthudu/acid-spray-maroon-t-shirt",
-        src:"http://www.livastar.com/media/catalog/product/cache/1/small_image/240x300/ed25b4e3d95d475170602de20a70f5db/l/i/livastar_mahesh_babu_srimanthudu_maroon_tshirt_main.jpg",
+        url:"https://www.flipkart.com/livastar-solid-men-round-neck-blue-t-shirt/p/itmf3ynffprcswrb?pid=TSHEZHGZAEGNVNVG&cmpid=product.share.pp&_refId=PP.6a4cf69c-f5ea-4eaf-8124-692943af2b8c.TSHEZHGZAEGNVNVG",
+        src:"https://rukminim2.flixcart.com/image/512/512/t-shirt/n/v/g/srim33-livastar-xxl-original-imaenz5xw3jvu3my.jpeg?q=100&crop=false",
         title: "Srimanthudu acid spray maroon shirt"
     },
     "2" : {
-        url:"http://www.livastar.com/movies/srimanthudu/charcoal-grey-cotton-henley",
-        src:"http://www.livastar.com/media/catalog/product/cache/1/small_image/240x300/ed25b4e3d95d475170602de20a70f5db/l/i/livastar_mahesh_babu_srimanthudu_dark_grey_tshirt_main.jpg",
+        url:"https://www.amazon.in/LAZYCHUNKS-Regular-Cotton-Henley-Charcoal/dp/B0BMXF1THB/ref=sr_1_1?crid=3OU12IZJ56Z7B&dib=eyJ2IjoiMSJ9.w8LAcdSUVQaeFYEK6I5ZD_ISDV49mh2OHCXrRZe-2pjCMk2Gi5QY0SNyh_TfEsxuil9DD0Oblk5YDt0fk9GGS5q9b-Pf67BSKGW7cuElpO9dPYNzV0ofTqqYbrsJwYAA0NvcDKFpKxGwWNSDGYf0iKzWVSIrMF7_4unjXIXEv7sJqLffOeuKnqk4bcNBxJgsnvcHdbDJIp_GrF1LbMF2gt7OsGG7m8ZkOMsRfbcKyJop9Dr_FJ2aIS9neM1JOjrbQqjC0fH0xEe-6t6oLmJJ-b_zaJ01_nPvURbdRx0ZiX4.URA0WIq8_b1-s_74u6bwOwU4O_UE10occpVELZhykzo&dib_tag=se&keywords=charcoal-grey-cotton-henley&qid=1708739106&sprefix=charcoal-grey-cotton-henley%2Caps%2C98&sr=8-1",
+        src:"https://m.media-amazon.com/images/I/51EfXkSie6L.jpg",
         title:"Srimanthudu charcoal grey henley"
     },
     "3" : {
-        url:"http://www.livastar.com/movies/srimanthudu/black-cotton-round-neck-t-shirt",
-        src:"http://www.livastar.com/media/catalog/product/cache/1/small_image/240x300/ed25b4e3d95d475170602de20a70f5db/l/i/livastar_mahesh_babu_srimanthudu_black_round_nect_tshirt_0-400x500over.jpg",
+        url:"https://www.amazon.in/London-Hills-Solid-Sleeve-T-Shirt/dp/B07FLCYKPS/",
+        src:"https://m.media-amazon.com/images/I/71tJWaahoDL._SY879_.jpg",
         title:"Black Cotton Round Neck T-Shirt"
     },
     "4" :{
