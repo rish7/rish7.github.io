@@ -3,12 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="theme-color" content="#04A3ED">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cricket Fun">
 <title>Weekend Cricket Fun — Offline Cricket Scorer</title>
 <style>
   :root{
-    --pitch:#123524;
-    --grass:#2f6b4f;
-    --grass-light:#3f8a68;
+    --pitch:#082a3d;
+    --grass:#04a3ed;
+    --grass-light:#3dc3f7;
     --cream:#f4eedb;
     --chalk:#fbf9f2;
     --ink:#1c2018;
@@ -17,13 +22,13 @@
     --leather-light:#c1443a;
     --gold:#c9a227;
     --line:#d9d0b4;
-    --shadow: 0 8px 24px rgba(18,53,36,0.18);
+    --shadow: 0 8px 24px rgba(4,44,66,0.18);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:
-      radial-gradient(1200px 600px at 50% -200px, #1a4a32 0%, var(--pitch) 55%),
+      radial-gradient(1200px 600px at 50% -200px, #0f5f86 0%, var(--pitch) 55%),
       var(--pitch);
     color:var(--ink);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -94,11 +99,11 @@
   }
   .radio-pick input{display:none;}
   .radio-pick input:checked + span{color:var(--grass);}
-  .radio-pick label.active{border-color:var(--grass);background:#eef7f1;}
+  .radio-pick label.active{border-color:var(--grass);background:#eaf6fd;}
 
   /* ---------- Scoreboard hero ---------- */
   .hero{
-    background:linear-gradient(160deg, var(--grass) 0%, #1f4d38 100%);
+    background:linear-gradient(160deg, var(--grass) 0%, #0c3b52 100%);
     color:var(--chalk);border-radius:16px;padding:22px 24px;box-shadow:var(--shadow);
     margin-bottom:16px;position:relative;overflow:hidden;
   }
@@ -108,12 +113,12 @@
     pointer-events:none;
   }
   .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;}
-  .hero-teams{font-size:13px;color:#d7ead9;font-weight:600;letter-spacing:.3px;}
-  .hero-innings{font-size:11.5px;color:#b9d6c1;text-transform:uppercase;letter-spacing:.6px;}
+  .hero-teams{font-size:13px;color:#d7ecf7;font-weight:600;letter-spacing:.3px;}
+  .hero-innings{font-size:11.5px;color:#b9d9ec;text-transform:uppercase;letter-spacing:.6px;}
   .hero-score{display:flex;align-items:baseline;gap:14px;margin-top:6px;flex-wrap:wrap;}
   .hero-score .big{font-size:52px;font-weight:700;line-height:1;}
-  .hero-score .overs{font-size:17px;color:#dcefe1;}
-  .hero-meta{display:flex;gap:18px;margin-top:12px;flex-wrap:wrap;font-size:12.5px;color:#cfe8d6;}
+  .hero-score .overs{font-size:17px;color:#dcf1fb;}
+  .hero-meta{display:flex;gap:18px;margin-top:12px;flex-wrap:wrap;font-size:12.5px;color:#cfe7f5;}
   .hero-meta b{color:#fff;}
   .target-note{margin-top:8px;font-size:13px;color:var(--gold);font-weight:600;}
 
@@ -137,8 +142,15 @@
   .pill.run0{background:#8f978c;}
   .pill.run4{background:var(--gold);color:#3a2e00;}
   .pill.run6{background:var(--leather);}
-  .pill.wicket{background:#26211d;}
+  .pill.wicket{background:var(--leather);}
+  .w-badge{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:var(--leather);color:#fff;font-weight:800;
+    width:20px;height:20px;border-radius:5px;font-size:12px;line-height:1;
+    vertical-align:middle;
+  }
   .pill.extra{background:var(--grass-light);}
+  .overpills.prev .pill{opacity:0.55;transform:scale(0.82);transform-origin:left center;}
 
   /* ---------- Ball entry ---------- */
   .entry h3{margin:0 0 10px;font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-soft);}
@@ -153,8 +165,12 @@
   .run-btn.six:hover{background:var(--leather-light);}
 
   .extras-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;}
+  .custom-score-row{display:flex;gap:8px;margin-top:10px;}
+  .custom-score-row input{flex:1;}
+  .custom-score-row button{white-space:nowrap;background:#eef2ec;color:var(--ink);border:1.5px solid var(--line);padding:0 16px;}
+  .custom-score-row button:hover{background:#e3ece5;}
   .extra-btn{padding:11px 4px;background:#fff;border:1.5px solid var(--grass-light);color:var(--grass);font-size:12.5px;border-radius:10px;}
-  .extra-btn:hover{background:#eef7f1;}
+  .extra-btn:hover{background:#eaf6fd;}
 
   .action-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
   .wicket-btn{padding:12px;background:var(--leather);color:#fff;font-size:13.5px;border-radius:10px;}
@@ -171,6 +187,30 @@
   .quickpick .run-btn{font-size:15px;}
   .quickpick .cancel{margin-top:8px;width:100%;background:transparent;border:none;color:var(--ink-soft);font-size:12px;text-decoration:underline;padding:4px;}
 
+  /* ---------- Action dropdown menu (Export JSON / CSV etc.) ---------- */
+  .action-menu{position:relative;display:inline-block;}
+  .menu-panel{
+    position:absolute;top:calc(100% + 6px);right:0;background:var(--chalk);border:1px solid var(--line);
+    border-radius:10px;box-shadow:0 12px 28px rgba(0,0,0,0.22);padding:6px;min-width:160px;z-index:60;
+  }
+  .menu-panel.hidden{display:none;}
+  .menu-item{
+    display:block;width:100%;text-align:left;background:transparent;border:none;color:var(--ink);
+    padding:9px 10px;font-size:13px;font-weight:600;border-radius:6px;
+  }
+  .menu-item:hover{background:#eef2ec;}
+  .menu-item.danger{color:var(--leather);}
+
+  /* ---------- Tabs (Scorecard / Commentary) ---------- */
+  .tabs{display:flex;gap:4px;border-bottom:1.5px solid var(--line);margin-bottom:14px;}
+  .tab-btn{
+    background:transparent;border:none;padding:10px 16px 12px;font-size:13px;font-weight:700;
+    color:var(--ink-soft);border-bottom:2.5px solid transparent;border-radius:0;margin-bottom:-1.5px;
+  }
+  .tab-btn:hover{color:var(--ink);}
+  .tab-btn.active{color:var(--grass);border-bottom-color:var(--grass);}
+  .tab-panel.hidden{display:none;}
+
   /* ---------- Commentary ---------- */
   .commentary{max-height:260px;overflow-y:auto;font-size:13px;}
   .commentary .entry-line{
@@ -186,10 +226,11 @@
 
   /* ---------- Modal ---------- */
   .modal-overlay{
-    position:fixed;inset:0;background:rgba(18,30,22,0.55);display:flex;align-items:center;justify-content:center;
+    position:fixed;inset:0;background:rgba(6,26,36,0.55);display:flex;align-items:center;justify-content:center;
     padding:18px;z-index:50;
   }
   .modal{background:var(--chalk);border-radius:16px;padding:24px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.4);max-height:88vh;overflow-y:auto;}
+  .modal.modal-wide{max-width:640px;}
   .modal h3{margin:0 0 4px;font-size:16px;}
   .modal .sub{color:var(--ink-soft);font-size:12.5px;margin-bottom:14px;}
 
@@ -239,9 +280,17 @@
       </div>
     </div>
     <div class="topbtns">
+      <button class="btn-ghost" id="btnHome">Home</button>
       <button class="btn-ghost" id="btnNewMatch">New match</button>
-      <button class="btn-ghost hidden" id="btnExportJson">Export JSON</button>
-      <button class="btn-ghost hidden" id="btnExportCsv">Export CSV</button>
+      <button class="btn-ghost hidden" id="btnInstallApp">Install app</button>
+      <div class="action-menu hidden" id="topExportMenu">
+        <button class="btn-ghost menu-toggle" data-menu-toggle="top">Export ▾</button>
+        <div class="menu-panel hidden" id="menuPanel-top">
+          <button class="menu-item" id="menuExportJson-top">Export JSON</button>
+          <button class="menu-item" id="menuExportCsv-top">Export CSV</button>
+        </div>
+      </div>
+      <button class="btn-ghost" id="btnHowToInstall">Add to Home Screen</button>
     </div>
   </div>
 
@@ -256,8 +305,11 @@
 "use strict";
 
 const STORAGE_KEY = "gully_cricket_scorer_v1";
+const HISTORY_KEY = "gully_cricket_history_v1";
 let state = null;
 let historyStack = [];
+let matchHistory = [];
+let currentView = "auto"; // "auto" = normal setup/scoring/match-over flow, "home" = match list
 
 /* =========================================================
    PERSISTENCE  (offline / local storage only — v1 scope)
@@ -287,6 +339,29 @@ function clearState(){
   state = null; historyStack = [];
   try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
 }
+function saveHistory(){
+  try{ localStorage.setItem(HISTORY_KEY, JSON.stringify(matchHistory)); }
+  catch(e){ console.warn("Could not save match history", e); }
+}
+function loadHistory(){
+  try{
+    const raw = localStorage.getItem(HISTORY_KEY);
+    matchHistory = raw ? JSON.parse(raw) : [];
+  }catch(e){ matchHistory = []; }
+}
+// Archives a full snapshot of the current match into local match history.
+// Safe to call more than once for the same match (replaces the prior entry).
+function archiveCurrentMatch(){
+  if(!state) return;
+  if(!state.id) state.id = uid();
+  matchHistory = matchHistory.filter(m => m.id !== state.id);
+  matchHistory.push(JSON.parse(JSON.stringify(state)));
+  saveHistory();
+}
+function removeFromHistory(id){
+  matchHistory = matchHistory.filter(m => m.id !== id);
+  saveHistory();
+}
 function pushHistory(){
   historyStack.push(JSON.parse(JSON.stringify(state)));
   if(historyStack.length > 400) historyStack.shift();
@@ -311,11 +386,21 @@ function rr(runs, legalBalls){
 function currentInnings(){
   return state.innings[state.inningsIndex];
 }
-function teamObj(key){ return state.teams[key]; }
+function teamObjFor(m, key){ return m.teams[key]; }
+function teamObj(key){ return teamObjFor(state, key); }
 function esc(s){
   return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 function uid(){ return Math.random().toString(36).slice(2,9); }
+function hasDuplicateNames(players){
+  const seen = new Set();
+  for(const name of players){
+    const key = name.trim().toLowerCase();
+    if(seen.has(key)) return true;
+    seen.add(key);
+  }
+  return false;
+}
 
 /* =========================================================
    MATCH SETUP
@@ -349,8 +434,12 @@ function ensureBowler(inn, name){
 
 function startMatch(cfg){
   state = {
+    id: uid(),
     createdAt: new Date().toISOString(),
     oversLimit: cfg.oversLimit,
+    singlePlayer: !!cfg.singlePlayer,
+    lastManStands: !!cfg.lastManStands,
+    allowCustomScore: !!cfg.allowCustomScore,
     teams: {
       A: {name: cfg.teamAName, players: cfg.teamAPlayers},
       B: {name: cfg.teamBName, players: cfg.teamBPlayers}
@@ -382,21 +471,31 @@ function battingTeamPlayers(inn){ return teamObj(inn.battingTeam).players; }
 function bowlingTeamPlayers(inn){ return teamObj(inn.bowlingTeam).players; }
 
 function rotateStrike(inn){
+  if(!inn.nonStrikerName) return; // last man stands: no partner to swap with
   const t = inn.strikerName;
   inn.strikerName = inn.nonStrikerName;
   inn.nonStrikerName = t;
 }
 
-function addTimelineEntry(inn, entry){
-  entry.over = Math.floor(inn.legalBalls/6);
+function addTimelineEntry(inn, entry, overIndex){
+  entry.over = overIndex;
   entry.teamRunsAfter = inn.runs;
   entry.teamWicketsAfter = inn.wickets;
   inn.timeline.push(entry);
 }
 
 function checkInningsEnd(inn){
-  const maxWkts = battingTeamPlayers(inn).length - 1;
-  if(inn.wickets >= maxWkts){ inn.complete = true; return "allout"; }
+  if(inn.complete) return "manual";
+  const totalPlayers = battingTeamPlayers(inn).length;
+  if(state.lastManStands){
+    // Last man stands: the surviving batsman keeps batting solo rather than
+    // ending the innings at the usual "all but one out" threshold. Only a
+    // truly complete wipe-out (every player dismissed) forces a stop.
+    if(inn.outNames.length >= totalPlayers){ inn.complete = true; return "allout"; }
+  } else {
+    const maxWkts = totalPlayers - 1;
+    if(inn.wickets >= maxWkts){ inn.complete = true; return "allout"; }
+  }
   if(inn.legalBalls >= state.oversLimit*6){ inn.complete = true; return "overs"; }
   if(state.inningsIndex===1 && inn.target!==null && inn.runs >= inn.target){ inn.complete = true; return "target"; }
   return null;
@@ -406,6 +505,14 @@ function finishMatchIfNeeded(){
   const inn = currentInnings();
   const reason = checkInningsEnd(inn);
   if(!reason) return null;
+
+  if(state.singlePlayer){
+    state.matchOver = true;
+    state.result = `Practice session complete — ${inn.runs}/${inn.wickets} off ${oversStr(inn.legalBalls)} overs`;
+    archiveCurrentMatch();
+    return {stage:"matchOver"};
+  }
+
   if(state.inningsIndex===0){
     return {stage:"needSecondInnings"};
   } else {
@@ -424,6 +531,7 @@ function finishMatchIfNeeded(){
     }
     state.matchOver = true;
     state.result = resultText;
+    archiveCurrentMatch();
     return {stage:"matchOver"};
   }
 }
@@ -434,6 +542,7 @@ function applyBall(opts){
   //        isWicket, wicketType, outWho('striker'|'nonstriker'), fielder}
   pushHistory();
   const inn = currentInnings();
+  const legalBallsBeforeThisBall = inn.legalBalls;
   const runsBat = opts.runsBat || 0;
   const extraType = opts.extraType || null;
   const extraRuns = opts.extraRuns || 0;
@@ -512,7 +621,7 @@ function applyBall(opts){
     playerOut: opts.isWicket ? wicketInfo.outName : "",
     fielder: opts.isWicket ? (opts.fielder||"") : "",
     isLegal: isLegal
-  });
+  }, Math.floor(legalBallsBeforeThisBall/6));
 
   saveState();
   return {wicketInfo, isLegal};
@@ -530,6 +639,24 @@ function renderSetup(){
       <h2>Set up a new match</h2>
       <div class="sub">Enter both squads. Add one player per line — any number of players is fine for backyard cricket.</div>
 
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;font-weight:600;font-size:13.5px;color:var(--ink);margin:0 0 10px;">
+        <input type="checkbox" id="singlePlayerToggle" style="width:auto;">
+        Practice mode (no opponent team)
+      </label>
+      <div class="small-note" id="singlePlayerNote" style="display:none;margin:-6px 0 10px;">You'll bat and track your own runs, wickets and overs. There's no second innings — the session ends after your overs (or you're all out). A generic "Bowler" is used to track bowling figures.</div>
+
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;font-weight:600;font-size:13.5px;color:var(--ink);margin:0 0 10px;">
+        <input type="checkbox" id="lastManToggle" style="width:auto;">
+        Last man batting alone
+      </label>
+      <div class="small-note" style="margin:-6px 0 10px;">When only one batsman is left, they keep batting solo instead of ending the innings — play continues until the overs run out.</div>
+
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;font-weight:600;font-size:13.5px;color:var(--ink);margin:0 0 14px;">
+        <input type="checkbox" id="customScoreToggle" style="width:auto;">
+        Enable custom score input
+      </label>
+      <div class="small-note" style="margin:-10px 0 14px;">Adds a "Custom score" option while scoring, for entering any run value directly (e.g. 7, 12) instead of just the usual 0–6 buttons.</div>
+
       <div class="row2">
         <div>
           <label>Team A name</label>
@@ -537,7 +664,7 @@ function renderSetup(){
           <label>Team A players (one per line)</label>
           <textarea id="teamAPlayers" placeholder="Player 1&#10;Player 2&#10;Player 3"></textarea>
         </div>
-        <div>
+        <div id="teamBWrap">
           <label>Team B name</label>
           <input type="text" id="teamBName" placeholder="e.g. Panthers" value="Team B">
           <label>Team B players (one per line)</label>
@@ -548,16 +675,31 @@ function renderSetup(){
       <label>Overs per innings</label>
       <input type="number" id="oversLimit" min="1" max="50" value="6">
 
-      <label>Who bats first?</label>
-      <div class="radio-pick" id="battingFirstPick">
-        <label class="active" data-val="A"><input type="radio" name="bf" checked><span id="lblA">Team A</span></label>
-        <label data-val="B"><input type="radio" name="bf"><span id="lblB">Team B</span></label>
+      <div id="battingFirstWrap">
+        <label>Who bats first?</label>
+        <div class="radio-pick" id="battingFirstPick">
+          <label class="active" data-val="A"><input type="radio" name="bf" checked><span id="lblA">Team A</span></label>
+          <label data-val="B"><input type="radio" name="bf"><span id="lblB">Team B</span></label>
+        </div>
       </div>
 
       <button class="primary-btn" id="btnGoOpeners">Continue → pick openers</button>
       <div class="small-note" id="setupError"></div>
     </div>
   `;
+
+  const singlePlayerToggle = document.getElementById('singlePlayerToggle');
+  const lastManToggle = document.getElementById('lastManToggle');
+  const customScoreToggle = document.getElementById('customScoreToggle');
+  const teamBWrap = document.getElementById('teamBWrap');
+  const battingFirstWrap = document.getElementById('battingFirstWrap');
+  const singlePlayerNote = document.getElementById('singlePlayerNote');
+  singlePlayerToggle.addEventListener('change', ()=>{
+    const isSingle = singlePlayerToggle.checked;
+    teamBWrap.style.display = isSingle ? 'none' : '';
+    battingFirstWrap.style.display = isSingle ? 'none' : '';
+    singlePlayerNote.style.display = isSingle ? '' : 'none';
+  });
 
   const battingFirstPick = document.getElementById('battingFirstPick');
   let battingFirst = 'A';
@@ -578,19 +720,49 @@ function renderSetup(){
   });
 
   document.getElementById('btnGoOpeners').addEventListener('click', ()=>{
+    const singlePlayer = singlePlayerToggle.checked;
+    const lastManStands = lastManToggle.checked;
+    const allowCustomScore = customScoreToggle.checked;
     const teamAName = document.getElementById('teamAName').value.trim() || "Team A";
-    const teamBName = document.getElementById('teamBName').value.trim() || "Team B";
     const teamAPlayers = document.getElementById('teamAPlayers').value.split("\n").map(s=>s.trim()).filter(Boolean);
-    const teamBPlayers = document.getElementById('teamBPlayers').value.split("\n").map(s=>s.trim()).filter(Boolean);
     const oversLimit = parseInt(document.getElementById('oversLimit').value, 10) || 6;
     const errEl = document.getElementById('setupError');
 
-    if(teamAPlayers.length < 2 || teamBPlayers.length < 2){
-      errEl.textContent = "Add at least 2 players per team.";
+    if(teamAPlayers.length < 2){
+      errEl.textContent = "Add at least 2 players (you need a striker and a non-striker).";
       errEl.style.color = "var(--leather)";
       return;
     }
-    startMatch({teamAName, teamBName, teamAPlayers, teamBPlayers, oversLimit, battingFirst});
+    if(hasDuplicateNames(teamAPlayers)){
+      errEl.textContent = `${teamAName} has two players with the same name — each player needs a unique name.`;
+      errEl.style.color = "var(--leather)";
+      return;
+    }
+
+    let teamBName, teamBPlayers;
+    if(singlePlayer){
+      teamBName = "Bowling";
+      teamBPlayers = ["Bowler"];
+    } else {
+      teamBName = document.getElementById('teamBName').value.trim() || "Team B";
+      teamBPlayers = document.getElementById('teamBPlayers').value.split("\n").map(s=>s.trim()).filter(Boolean);
+      if(teamBPlayers.length < 2){
+        errEl.textContent = "Add at least 2 players per team.";
+        errEl.style.color = "var(--leather)";
+        return;
+      }
+      if(hasDuplicateNames(teamBPlayers)){
+        errEl.textContent = `${teamBName} has two players with the same name — each player needs a unique name.`;
+        errEl.style.color = "var(--leather)";
+        return;
+      }
+    }
+
+    startMatch({
+      teamAName, teamBName, teamAPlayers, teamBPlayers, oversLimit,
+      battingFirst: singlePlayer ? 'A' : battingFirst,
+      singlePlayer, lastManStands, allowCustomScore
+    });
     render();
   });
 }
@@ -638,30 +810,44 @@ function renderNeedsOpeners(inn){
   });
 }
 
-function pillsForCurrentOver(inn){
-  const startBall = Math.floor(inn.legalBalls/6)*6;
-  // gather timeline entries belonging to current over: those after the last "legal ball multiple of 6" boundary
-  // we reconstruct by walking timeline backwards counting legal balls until we hit `inn.legalBalls % 6` legal ones,
-  // but simplest: filter by entry.over === current over number.
-  const overNum = Math.floor(inn.legalBalls/6);
-  const entries = inn.timeline.filter(t => t.over === overNum);
-  if(entries.length === 0) return `<span class="small-note">No balls bowled yet this over.</span>`;
+function pillsForOver(inn, overIndex){
+  const entries = inn.timeline.filter(t => t.over === overIndex);
+  if(entries.length === 0) return null;
   return entries.map(t=>{
     let cls = 'pill', label = '';
     if(t.isWicket){ cls += ' wicket'; label = 'W'; }
     else if(t.extraType){ cls += ' extra'; label = (t.extraType==='wide'?'Wd':t.extraType==='noball'?'Nb':t.extraType==='bye'?'B':'Lb') + (t.totalRuns>1? t.totalRuns-1 : '' ); }
-    else if(t.runsBat===4){ cls+=' run4'; label='4'; }
-    else if(t.runsBat===6){ cls+=' run6'; label='6'; }
+    else if(t.runsBat===4){ cls+=' run4'; label='4️⃣'; }
+    else if(t.runsBat===6){ cls+=' run6'; label='6️⃣'; }
     else { cls += ' run0'; label = String(t.runsBat); }
     return `<div class="${cls}">${label}</div>`;
   }).join('');
+}
+function overPillsBlockHTML(inn){
+  const currentOverNum = Math.floor(inn.legalBalls/6);
+  const prevOverNum = currentOverNum - 1;
+  const currentPills = pillsForOver(inn, currentOverNum);
+  const prevPills = prevOverNum >= 0 ? pillsForOver(inn, prevOverNum) : null;
+
+  let html = '';
+  if(prevPills){
+    html += `
+      <div class="small-note" style="margin-bottom:4px;">Previous over</div>
+      <div class="overpills prev">${prevPills}</div>
+    `;
+  }
+  html += `
+    <div class="small-note" style="margin:${prevPills ? '10px' : '0'} 0 4px;">This over</div>
+    <div class="overpills">${currentPills || '<span class="small-note">No balls bowled yet this over.</span>'}</div>
+  `;
+  return html;
 }
 
 function renderScoring(inn){
   const battingTeam = teamObj(inn.battingTeam);
   const bowlingTeam = teamObj(inn.bowlingTeam);
   const striker = inn.batsmanStats[inn.strikerName];
-  const nonStriker = inn.batsmanStats[inn.nonStrikerName];
+  const nonStriker = inn.nonStrikerName ? inn.batsmanStats[inn.nonStrikerName] : null;
   const bowler = inn.bowlerStats[inn.currentBowler];
   const oversText = oversStr(inn.legalBalls) + " / " + state.oversLimit;
 
@@ -672,7 +858,7 @@ function renderScoring(inn){
     <div class="hero">
       <div class="hero-top">
         <div class="hero-teams">${esc(battingTeam.name)} <span style="opacity:.6">batting</span> vs ${esc(bowlingTeam.name)} <span style="opacity:.6">bowling</span></div>
-        <div class="hero-innings">Innings ${state.inningsIndex+1} of 2</div>
+        <div class="hero-innings">${state.singlePlayer ? 'Practice session' : `Innings ${state.inningsIndex+1} of 2`}</div>
       </div>
       <div class="hero-score">
         <span class="big score-font">${inn.runs}/${inn.wickets}</span>
@@ -690,9 +876,9 @@ function renderScoring(inn){
         <h3>Batting</h3>
         <table class="stat">
           <tr class="on-strike"><td>${esc(inn.strikerName)}</td><td class="num">${striker.runs} (${striker.balls})</td></tr>
-          <tr><td>${esc(inn.nonStrikerName)}</td><td class="num">${nonStriker.runs} (${nonStriker.balls})</td></tr>
+          ${nonStriker ? `<tr><td>${esc(inn.nonStrikerName)}</td><td class="num">${nonStriker.runs} (${nonStriker.balls})</td></tr>` : `<tr><td class="small-note" style="font-style:italic;">Last man batting alone</td><td></td></tr>`}
         </table>
-        <div class="overpills">${pillsForCurrentOver(inn)}</div>
+        <div id="overPillsBlock">${overPillsBlockHTML(inn)}</div>
       </div>
       <div class="panel">
         <h3>Bowling</h3>
@@ -706,7 +892,7 @@ function renderScoring(inn){
     <div class="card entry">
       <h3>Record this ball</h3>
       <div class="runs-grid">
-        ${[0,1,2,3,4,5,6].map(r=>`<button class="run-btn ${r===4?'four':''} ${r===6?'six':''}" data-run="${r}">${r}</button>`).join('')}
+        ${[0,1,2,3,4,5,6].map(r=>`<button class="run-btn ${r===4?'four':''} ${r===6?'six':''}" data-run="${r}">${r===4?'4️⃣':r===6?'6️⃣':r}</button>`).join('')}
       </div>
       <div class="extras-row">
         <button class="extra-btn" data-extra="wide">Wide</button>
@@ -714,16 +900,22 @@ function renderScoring(inn){
         <button class="extra-btn" data-extra="bye">Bye</button>
         <button class="extra-btn" data-extra="legbye">Leg bye</button>
       </div>
+      ${state.allowCustomScore ? `
+      <button class="btn-ghost" id="btnToggleCustomRuns" style="background:#eef2ec;color:var(--ink);border:1.5px solid var(--line);width:100%;margin-top:10px;padding:10px;">Custom score ▾</button>
+      <div class="custom-score-row hidden" id="customScoreRow">
+        <input type="number" id="customRunsInput" min="0" placeholder="Enter runs (e.g. 7, 12...)">
+        <button class="btn-ghost" id="btnAddCustomRuns">Add runs</button>
+      </div>
+      ` : ''}
       <div class="action-row">
-        <button class="wicket-btn" id="btnWicket">Wicket</button>
+        <button class="wicket-btn" id="btnWicket"><span class="w-badge">W</span> Wicket</button>
         <button class="undo-btn" id="btnUndo" ${historyStack.length? '' : 'disabled'}>Undo last ball</button>
       </div>
       <div id="quickpickHost"></div>
     </div>
 
     <div class="card">
-      <h3 style="margin:0 0 10px;font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-soft);">Commentary</h3>
-      <div class="commentary" id="commentaryHost"></div>
+      ${buildTabsHTML('live', buildScorecardHTML(state), buildCommentaryHTML(state.innings))}
     </div>
 
     <div class="footer-actions">
@@ -731,7 +923,7 @@ function renderScoring(inn){
     </div>
   `;
 
-  renderCommentary(inn);
+  wireTabs('live');
 
   app.querySelectorAll('.run-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
@@ -744,6 +936,23 @@ function renderScoring(inn){
   });
   document.getElementById('btnWicket').addEventListener('click', ()=> openWicketModal(inn));
   document.getElementById('btnUndo').addEventListener('click', undoLast);
+  if(state.allowCustomScore){
+    document.getElementById('btnToggleCustomRuns').addEventListener('click', ()=>{
+      document.getElementById('customScoreRow').classList.toggle('hidden');
+    });
+    document.getElementById('btnAddCustomRuns').addEventListener('click', ()=>{
+      const input = document.getElementById('customRunsInput');
+      const val = parseInt(input.value, 10);
+      if(!Number.isFinite(val) || val < 0){
+        input.focus();
+        return;
+      }
+      handleNormalRun(val);
+    });
+    document.getElementById('customRunsInput').addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter') document.getElementById('btnAddCustomRuns').click();
+    });
+  }
   document.getElementById('btnEndInningsManual').addEventListener('click', ()=>{
     openConfirmModal({
       title: "End this innings now?",
@@ -752,45 +961,80 @@ function renderScoring(inn){
       onConfirm: ()=>{
         pushHistory();
         inn.complete = true;
-        afterBallProgress();
+        resolvePostBall(false);
       }
     });
   });
 }
 
-function renderCommentary(inn){
-  const host = document.getElementById('commentaryHost');
-  if(!host) return;
-  if(inn.timeline.length===0){
-    host.innerHTML = `<div class="empty-note">Ball-by-ball commentary will appear here.</div>`;
-    return;
+// Builds ball-by-ball commentary HTML for one innings or an array of innings
+// (used for the live match's current innings, and for a completed match's
+// full multi-innings history). Most recent innings/ball shown first.
+function buildCommentaryHTML(innOrInnings){
+  const inningsArr = Array.isArray(innOrInnings) ? innOrInnings : [innOrInnings];
+  const anyBalls = inningsArr.some(inn => inn.timeline.length>0);
+  if(!anyBalls){
+    return `<div class="commentary"><div class="empty-note">Ball-by-ball commentary will appear here.</div></div>`;
   }
-  const rows = inn.timeline.slice().reverse().map(t=>{
-    let desc;
-    if(t.isWicket){
-      desc = `<b>${esc(t.playerOut)}</b> is out (${esc(t.wicketType)}${t.fielder? ' — '+esc(t.fielder):''}). Bowled by ${esc(t.bowler)}.`;
-    } else if(t.extraType==='wide'){
-      desc = `Wide${t.totalRuns>1? ' + '+(t.totalRuns-1)+' run(s)':''} — ${t.totalRuns} run(s) to the team.`;
-    } else if(t.extraType==='noball'){
-      desc = `No ball${t.runsBat? ', '+t.runsBat+' run(s) off the bat':''} — ${t.totalRuns} run(s) to the team.`;
-    } else if(t.extraType==='bye' || t.extraType==='legbye'){
-      desc = `${t.extraType==='bye'?'Bye':'Leg bye'}, ${t.totalRuns} run(s).`;
-    } else if(t.runsBat===0){
-      desc = `${esc(t.batsman)} defends — no run.`;
-    } else if(t.runsBat===4){
-      desc = `<b>FOUR!</b> ${esc(t.batsman)} finds the boundary.`;
-    } else if(t.runsBat===6){
-      desc = `<b>SIX!</b> ${esc(t.batsman)} clears the ropes.`;
-    } else {
-      desc = `${esc(t.batsman)} takes ${t.runsBat}.`;
-    }
-    return `<div class="entry-line">
-        <span class="ov score-font">${esc(t.ballDisplay)}</span>
-        <span class="desc">${desc}</span>
-        <span class="tag score-font">${t.teamRunsAfter}/${t.teamWicketsAfter}</span>
-      </div>`;
-  }).join('');
-  host.innerHTML = rows;
+  const multiInnings = inningsArr.length > 1;
+  const blocks = inningsArr.map((inn, idx)=>{
+    if(inn.timeline.length===0) return '';
+    const rows = inn.timeline.slice().reverse().map(t=>{
+      let desc;
+      if(t.isWicket){
+        desc = `<span class="w-badge">W</span> <b>${esc(t.playerOut)}</b> is out (${esc(t.wicketType)}${t.fielder? ' — '+esc(t.fielder):''}). Bowled by ${esc(t.bowler)}.`;
+      } else if(t.extraType==='wide'){
+        desc = `Wide${t.totalRuns>1? ' + '+(t.totalRuns-1)+' run(s)':''} — ${t.totalRuns} run(s) to the team.`;
+      } else if(t.extraType==='noball'){
+        desc = `No ball${t.runsBat? ', '+t.runsBat+' run(s) off the bat':''} — ${t.totalRuns} run(s) to the team.`;
+      } else if(t.extraType==='bye' || t.extraType==='legbye'){
+        desc = `${t.extraType==='bye'?'Bye':'Leg bye'}, ${t.totalRuns} run(s).`;
+      } else if(t.runsBat===0){
+        desc = `${esc(t.batsman)} defends — no run.`;
+      } else if(t.runsBat===4){
+        desc = `4️⃣ <b>FOUR!</b> ${esc(t.batsman)} finds the boundary.`;
+      } else if(t.runsBat===6){
+        desc = `6️⃣ <b>SIX!</b> ${esc(t.batsman)} clears the ropes.`;
+      } else {
+        desc = `${esc(t.batsman)} takes ${t.runsBat}.`;
+      }
+      return `<div class="entry-line">
+          <span class="ov score-font">${esc(t.ballDisplay)}</span>
+          <span class="desc">${desc}</span>
+          <span class="tag score-font">${t.teamRunsAfter}/${t.teamWicketsAfter}</span>
+        </div>`;
+    }).join('');
+    return multiInnings ? `<div class="small-note" style="font-weight:700;margin:12px 0 4px;">Innings ${idx+1}</div>${rows}` : rows;
+  });
+  return `<div class="commentary">${blocks.slice().reverse().join('')}</div>`;
+}
+
+/* ---------- Scorecard / Commentary tabs (used live, on the match-over
+   screen, and inside the history "Scorecard" modal) ---------- */
+function buildTabsHTML(idPrefix, scorecardHTML, commentaryHTML){
+  return `
+    <div class="tabs">
+      <button class="tab-btn active" data-tab-btn="${idPrefix}-scorecard">Scorecard</button>
+      <button class="tab-btn" data-tab-btn="${idPrefix}-commentary">Commentary</button>
+    </div>
+    <div class="tab-panel" id="tabpanel-${idPrefix}-scorecard">${scorecardHTML}</div>
+    <div class="tab-panel hidden" id="tabpanel-${idPrefix}-commentary">${commentaryHTML}</div>
+  `;
+}
+function wireTabs(idPrefix){
+  const scoreBtn = document.querySelector(`[data-tab-btn="${idPrefix}-scorecard"]`);
+  const commBtn = document.querySelector(`[data-tab-btn="${idPrefix}-commentary"]`);
+  const scorePanel = document.getElementById(`tabpanel-${idPrefix}-scorecard`);
+  const commPanel = document.getElementById(`tabpanel-${idPrefix}-commentary`);
+  if(!scoreBtn || !commBtn || !scorePanel || !commPanel) return;
+  scoreBtn.addEventListener('click', ()=>{
+    scoreBtn.classList.add('active'); commBtn.classList.remove('active');
+    scorePanel.classList.remove('hidden'); commPanel.classList.add('hidden');
+  });
+  commBtn.addEventListener('click', ()=>{
+    commBtn.classList.add('active'); scoreBtn.classList.remove('active');
+    commPanel.classList.remove('hidden'); scorePanel.classList.add('hidden');
+  });
 }
 
 /* ---------- quick-pick panel for extras runs ---------- */
@@ -801,7 +1045,7 @@ function showExtraQuickpick(extraType){
   const promptText = isBoundaryStyle
     ? `How many run(s) were completed?`
     : `Any extra run(s) completed (beyond the automatic 1)?`;
-  const range = isBoundaryStyle ? [1,2,3,4,5,6] : [0,1,2,3,4];
+  const range = isBoundaryStyle ? [1,2,3,4,5,6] : (extraType==='noball' ? [0,1,2,3,4,5,6] : [0,1,2,3,4]);
   host.innerHTML = `
     <div class="quickpick">
       <div class="qtitle">${label} — ${promptText}</div>
@@ -832,39 +1076,53 @@ function handleNormalRun(runs){
 }
 
 function commitBall(opts){
-  const inn = currentInnings();
-  const wasOverBoundary = inn.legalBalls; // before
-  applyBall(opts);
-  afterBallProgress();
+  const result = applyBall(opts);
+  resolvePostBall(result.isLegal);
 }
 
-/* Decide what happens after any ball: over-end bowler pick, innings end, match end */
-function afterBallProgress(){
+/* Decide what happens after any ball: new batsman (if a wicket fell), then
+   new bowler (if a *legal* delivery just completed the over), then innings/
+   match end. Gating the over-transition on `justBowledLegal` is what stops a
+   wide/no-ball from spuriously re-triggering "over complete" — illegal
+   deliveries don't advance legalBalls, so without this check the boundary
+   value left over from the previous over would look "complete" again the
+   moment any wide/no-ball was bowled at the start of the next over. */
+function resolvePostBall(justBowledLegal){
   const inn = currentInnings();
+
   const endResult = finishMatchIfNeeded();
   if(endResult){
     saveState();
     render();
     return;
   }
-  // over completed?
-  if(inn.legalBalls>0 && inn.legalBalls % 6 === 0){
+
+  const lastEntry = inn.timeline[inn.timeline.length-1];
+  const needsBatsman = !!(lastEntry && lastEntry.isWicket);
+  const needsNewBowler = !!(justBowledLegal && inn.legalBalls>0 && inn.legalBalls % 6 === 0);
+
+  if(needsNewBowler){
     rotateStrike(inn);
     inn.previousBowler = inn.currentBowler;
     inn.currentBowler = null;
-    saveState();
-    openNewOverModal(inn);
-    return;
   }
+
   saveState();
-  render();
+
+  if(needsBatsman){
+    openNextBatsmanModal(inn, lastEntry, needsNewBowler);
+  } else if(needsNewBowler){
+    openNewOverModal(inn);
+  } else {
+    render();
+  }
 }
 
 /* =========================================================
    MODALS: wicket entry, new batsman, new bowler
    ========================================================= */
-function openModal(html){
-  modalRoot.innerHTML = `<div class="modal-overlay" id="modalOverlay"><div class="modal">${html}</div></div>`;
+function openModal(html, wide){
+  modalRoot.innerHTML = `<div class="modal-overlay" id="modalOverlay"><div class="modal${wide?' modal-wide':''}">${html}</div></div>`;
 }
 function closeModal(){ modalRoot.innerHTML = ''; }
 
@@ -892,7 +1150,7 @@ function openWicketModal(inn){
   const battingPlayers = battingTeamPlayers(inn);
   const bowlingPlayers = bowlingTeamPlayers(inn);
   openModal(`
-    <h3>Wicket!</h3>
+    <h3><span class="w-badge">W</span> Wicket!</h3>
     <div class="sub">Record how the batsman got out.</div>
 
     <label>How out</label>
@@ -910,7 +1168,7 @@ function openWicketModal(inn){
       <label>Who is out</label>
       <select id="wWho">
         <option value="striker">${esc(inn.strikerName)} (striker)</option>
-        <option value="nonstriker">${esc(inn.nonStrikerName)} (non-striker)</option>
+        ${inn.nonStrikerName ? `<option value="nonstriker">${esc(inn.nonStrikerName)} (non-striker)</option>` : ''}
       </select>
     </div>
 
@@ -959,28 +1217,30 @@ function openWicketModal(inn){
       outWho,
       fielder
     });
-    // after commit, if innings/match not over, need next batsman
-    maybeOpenNextBatsman();
   });
 }
 
-function maybeOpenNextBatsman(){
-  const inn = currentInnings();
-  if(state.matchOver) return;
-  if(inn.complete){ return; } // handled by afterBallProgress already (needSecondInnings flow / match over)
-  // If the innings is not complete but a wicket just happened, we need a replacement batsman
-  const lastEntry = inn.timeline[inn.timeline.length-1];
-  if(!lastEntry || !lastEntry.isWicket) { render(); return; }
-
+function openNextBatsmanModal(inn, lastEntry, thenNeedsBowler){
   const battingPlayers = battingTeamPlayers(inn);
   const available = battingPlayers.filter(p => !inn.outNames.includes(p) && p !== inn.strikerName && p !== inn.nonStrikerName);
   if(available.length===0){
-    // shouldn't normally happen if checkInningsEnd is correct, but guard anyway
-    render();
+    if(state.lastManStands){
+      // Last man stands: the not-out batsman keeps playing alone.
+      if(inn.strikerName === lastEntry.playerOut){
+        inn.strikerName = inn.nonStrikerName;
+      }
+      inn.nonStrikerName = null;
+      saveState();
+      if(thenNeedsBowler) openNewOverModal(inn); else render();
+      return;
+    }
+    // Shouldn't normally happen otherwise (checkInningsEnd should already
+    // have ended the innings as all-out before we get here).
+    if(thenNeedsBowler) openNewOverModal(inn); else render();
     return;
   }
   openModal(`
-    <h3>Next batsman</h3>
+    <h3><span class="w-badge">W</span> Next batsman</h3>
     <div class="sub">${esc(lastEntry.playerOut)} is out. Who's coming in?</div>
     <select id="nextBatsman">${available.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('')}</select>
     <button class="primary-btn" id="confirmNextBatsman">Confirm</button>
@@ -999,7 +1259,11 @@ function maybeOpenNextBatsman(){
     }
     saveState();
     closeModal();
-    render();
+    if(thenNeedsBowler){
+      openNewOverModal(inn);
+    } else {
+      render();
+    }
   });
 }
 
@@ -1061,32 +1325,231 @@ function renderFirstInningsCompleteBanner(inn){
 }
 
 function renderMatchOver(){
-  const inn0 = state.innings[0], inn1 = state.innings[1];
+  const inn0 = state.innings[0];
+  const inn1 = state.innings[1]; // undefined for a single-player practice session
+  const scoreLine = inn1
+    ? `${esc(teamObj(inn0.battingTeam).name)} ${inn0.runs}/${inn0.wickets} (${oversStr(inn0.legalBalls)} ov) &nbsp;·&nbsp; ${esc(teamObj(inn1.battingTeam).name)} ${inn1.runs}/${inn1.wickets} (${oversStr(inn1.legalBalls)} ov)`
+    : `${esc(teamObj(inn0.battingTeam).name)} ${inn0.runs}/${inn0.wickets} (${oversStr(inn0.legalBalls)} ov)`;
   app.innerHTML = `
     <div class="result-banner">
       <h2>${esc(state.result)}</h2>
-      <p>${esc(teamObj(inn0.battingTeam).name)} ${inn0.runs}/${inn0.wickets} (${oversStr(inn0.legalBalls)} ov) &nbsp;·&nbsp; ${esc(teamObj(inn1.battingTeam).name)} ${inn1.runs}/${inn1.wickets} (${oversStr(inn1.legalBalls)} ov)</p>
+      <p>${scoreLine}</p>
     </div>
     <div class="card">
-      <h2>Match complete</h2>
-      <div class="sub">Export the full scorecard, start a new match, or delete this match from local storage.</div>
+      ${buildTabsHTML('matchover', buildScorecardHTML(state), buildCommentaryHTML(state.innings))}
+    </div>
+    <div class="card">
+      <h2>${state.singlePlayer ? 'Session complete' : 'Match complete'}</h2>
+      <div class="sub">Export the scorecard, start a new match, or delete this match from local storage.</div>
       <div class="footer-actions">
-        <button class="export-btn" id="btnExportJson2">Export JSON</button>
-        <button class="export-btn" id="btnExportCsv2">Export CSV (ball-by-ball)</button>
+        ${buildExportMenuHTML('matchover-export')}
         <button class="btn-ghost leather-btn" id="btnNewMatch2" style="background:var(--leather);color:#fff;">Start new match</button>
         <button class="btn-ghost" id="btnDeleteMatch" style="background:transparent;color:var(--leather);border:1.5px solid var(--leather);">Delete match</button>
       </div>
     </div>
   `;
-  document.getElementById('btnExportJson2').addEventListener('click', exportJSON);
-  document.getElementById('btnExportCsv2').addEventListener('click', exportCSV);
+  wireTabs('matchover');
+  wireExportMenu('matchover-export', state);
   document.getElementById('btnNewMatch2').addEventListener('click', confirmNewMatch);
   document.getElementById('btnDeleteMatch').addEventListener('click', deleteSavedMatch);
 }
 
+/* =========================================================
+   HOME SCREEN — shows the in-progress/just-finished match
+   plus every previously completed match saved on this device
+   ========================================================= */
+function matchSummaryHTML(m){
+  const dateStr = new Date(m.createdAt).toLocaleString();
+  const scoreLine = m.innings.map(inn =>
+    `${esc(teamObjFor(m, inn.battingTeam).name)} ${inn.runs}/${inn.wickets} (${oversStr(inn.legalBalls)} ov)`
+  ).join(' &nbsp;·&nbsp; ');
+  const resultLine = m.matchOver ? esc(m.result) : 'In progress';
+  return `
+    <div class="sub" style="margin-bottom:6px;">${esc(teamObjFor(m,'A').name)} vs ${esc(teamObjFor(m,'B').name)} · ${m.oversLimit} overs · ${esc(dateStr)}</div>
+    <div style="font-weight:700;margin-bottom:6px;">${resultLine}</div>
+    <div class="small-note score-font">${scoreLine}</div>
+  `;
+}
+
+function historyItemHTML(m){
+  const dateStr = new Date(m.createdAt).toLocaleString();
+  const scoreLine = m.innings.map(inn =>
+    `${esc(teamObjFor(m, inn.battingTeam).name)} ${inn.runs}/${inn.wickets} (${oversStr(inn.legalBalls)} ov)`
+  ).join(' · ');
+  return `
+    <div class="card" style="padding:16px 18px;margin-bottom:10px;">
+      <div style="font-weight:700;margin-bottom:2px;">${esc(teamObjFor(m,'A').name)} vs ${esc(teamObjFor(m,'B').name)}</div>
+      <div class="small-note" style="margin-bottom:6px;">${esc(dateStr)} · ${m.oversLimit} overs</div>
+      <div style="font-size:13.5px;margin-bottom:4px;">${esc(m.result || (m.matchOver ? 'Result unavailable' : 'Not finished'))}</div>
+      <div class="small-note score-font" style="margin-bottom:10px;">${scoreLine}</div>
+      <div class="footer-actions" style="margin:0;justify-content:flex-start;">
+        <button class="export-btn" id="hist-scorecard-${m.id}">Scorecard</button>
+        ${buildExportMenuHTML('hist-'+m.id)}
+        <button class="btn-ghost" id="hist-del-${m.id}" style="background:transparent;color:var(--leather);border:1.5px solid var(--leather);">Remove</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderHome(){
+  const hasCurrent = !!state;
+  const others = matchHistory
+    .filter(m => !state || m.id !== state.id)
+    .slice()
+    .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  let html = '';
+
+  if(hasCurrent){
+    html += `
+      <div class="card">
+        <h2>${state.matchOver ? 'Last match' : 'Match in progress'}</h2>
+        ${matchSummaryHTML(state)}
+        <button class="primary-btn" id="btnResumeCurrent">${state.matchOver ? 'View result' : 'Resume match'}</button>
+      </div>
+    `;
+  } else {
+    html += `
+      <div class="card">
+        <h2>No match in progress</h2>
+        <div class="sub">Start a new match to begin scoring.</div>
+        <button class="primary-btn" id="btnStartFromHome">Start new match</button>
+      </div>
+    `;
+  }
+
+  html += `
+    <div class="card">
+      <h2>Previous games</h2>
+      <div class="sub">Saved on this device (offline). You can also import matches you exported earlier as JSON.</div>
+      <input type="file" id="importFiles" accept="application/json,.json" multiple style="display:none;">
+      <button class="btn-ghost" id="btnImport" style="background:#eef2ec;color:var(--ink);border:1.5px solid var(--line);margin-bottom:14px;">Import match file(s)</button>
+      <div id="importMsg" class="small-note"></div>
+      <div id="historyList">${others.length ? others.map(m=>historyItemHTML(m)).join('') : '<div class="empty-note">No previous matches saved yet.</div>'}</div>
+    </div>
+  `;
+
+  app.innerHTML = html;
+
+  if(hasCurrent){
+    document.getElementById('btnResumeCurrent').addEventListener('click', ()=>{ currentView='auto'; render(); });
+  } else {
+    document.getElementById('btnStartFromHome').addEventListener('click', ()=>{ currentView='auto'; render(); });
+  }
+
+  document.getElementById('btnImport').addEventListener('click', ()=> document.getElementById('importFiles').click());
+  document.getElementById('importFiles').addEventListener('change', handleImportFiles);
+
+  others.forEach(m=>{
+    const scoreBtn = document.getElementById('hist-scorecard-'+m.id);
+    const delBtn = document.getElementById('hist-del-'+m.id);
+    if(scoreBtn) scoreBtn.addEventListener('click', ()=> openScorecardModal(m));
+    if(delBtn) delBtn.addEventListener('click', ()=> confirmRemoveHistoryEntry(m.id));
+    wireExportMenu('hist-'+m.id, m);
+  });
+}
+
+function confirmRemoveHistoryEntry(id){
+  openConfirmModal({
+    title: "Remove this match?",
+    message: "This permanently deletes the saved match from this device. Export it first if you want to keep a copy.",
+    confirmLabel: "Remove",
+    onConfirm: ()=>{
+      removeFromHistory(id);
+      if(state && state.id === id){ clearState(); }
+      render();
+    }
+  });
+}
+
+// Import previously-exported JSON match files back into local history.
+// (Select multiple files at once — e.g. everything in your exports folder.)
+function handleImportFiles(e){
+  const files = Array.from(e.target.files || []);
+  const msg = document.getElementById('importMsg');
+  if(!files.length) return;
+  let ok = 0, fail = 0, remaining = files.length;
+  files.forEach(file=>{
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const data = JSON.parse(reader.result);
+        if(!data.teams || !data.innings) throw new Error("not a match file");
+        if(!data.id) data.id = uid();
+        matchHistory = matchHistory.filter(m => m.id !== data.id);
+        matchHistory.push(data);
+        ok++;
+      }catch(err){ fail++; }
+      remaining--;
+      if(remaining===0) finishImport();
+    };
+    reader.onerror = () => { fail++; remaining--; if(remaining===0) finishImport(); };
+    reader.readAsText(file);
+  });
+  function finishImport(){
+    saveHistory();
+    e.target.value = '';
+    if(msg) msg.textContent = `Imported ${ok} match${ok===1?'':'es'}${fail? `, ${fail} file(s) skipped (not a recognized match export)`:''}.`;
+    render();
+  }
+}
+
+/* =========================================================
+   FULL SCORECARD (batting + bowling, both innings)
+   ========================================================= */
+function buildScorecardHTML(m){
+  return m.innings.map((inn, idx)=>{
+    const seen = new Set();
+    const order = (inn.battedOrder.length ? inn.battedOrder : Object.keys(inn.batsmanStats)).filter(n=>{
+      if(seen.has(n)) return false;
+      seen.add(n);
+      return true;
+    });
+    const battingRows = order.map(name=>{
+      const s = inn.batsmanStats[name] || {runs:0, balls:0, fours:0, sixes:0, out:false, howOut:'', fielder:''};
+      const sr = s.balls ? ((s.runs/s.balls)*100).toFixed(1) : '0.0';
+      const isAtCrease = (name===inn.strikerName || name===inn.nonStrikerName) && !s.out;
+      const dismissal = s.out ? (esc(s.howOut) + (s.fielder? ' ('+esc(s.fielder)+')':'')) : (isAtCrease ? 'not out' : 'did not bat');
+      return `<tr><td>${esc(name)}</td><td class="num">${s.runs}</td><td class="num">${s.balls}</td><td class="num">${s.fours}</td><td class="num">${s.sixes}</td><td class="num">${sr}</td></tr>
+        <tr><td colspan="6" style="font-size:11px;color:var(--ink-soft);padding-top:0;padding-bottom:8px;">${dismissal}</td></tr>`;
+    }).join('');
+
+    const bowlerNames = Object.keys(inn.bowlerStats);
+    const bowlingRows = bowlerNames.map(name=>{
+      const b = inn.bowlerStats[name];
+      const econ = b.balls ? (b.runs/(b.balls/6)).toFixed(2) : '0.00';
+      return `<tr><td>${esc(name)}</td><td class="num">${oversStr(b.balls)}</td><td class="num">${b.runs}</td><td class="num">${b.wickets}</td><td class="num">${econ}</td></tr>`;
+    }).join('');
+
+    return `
+      <h3 style="margin:18px 0 8px;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-soft);">Innings ${idx+1} — ${esc(teamObjFor(m, inn.battingTeam).name)} ${inn.runs}/${inn.wickets} (${oversStr(inn.legalBalls)} ov)</h3>
+      <table class="stat" style="width:100%;margin-bottom:12px;">
+        <tr style="font-size:11px;color:var(--ink-soft);text-transform:uppercase;"><td>Batting</td><td class="num">R</td><td class="num">B</td><td class="num">4️⃣</td><td class="num">6️⃣</td><td class="num">SR</td></tr>
+        ${battingRows || '<tr><td colspan="6" class="small-note">No batting data.</td></tr>'}
+      </table>
+      <table class="stat" style="width:100%;">
+        <tr style="font-size:11px;color:var(--ink-soft);text-transform:uppercase;"><td>Bowling</td><td class="num">O</td><td class="num">R</td><td class="num"><span class="w-badge" style="width:16px;height:16px;font-size:10px;">W</span></td><td class="num">Econ</td></tr>
+        ${bowlingRows || '<tr><td colspan="5" class="small-note">No bowling data.</td></tr>'}
+      </table>
+    `;
+  }).join('<hr style="border:none;border-top:1px solid var(--line);margin:20px 0;">');
+}
+
+function openScorecardModal(m){
+  openModal(`
+    <h3>${esc(teamObjFor(m,'A').name)} vs ${esc(teamObjFor(m,'B').name)}</h3>
+    ${buildTabsHTML('modal', buildScorecardHTML(m), buildCommentaryHTML(m.innings))}
+    <button class="undo-btn" id="scorecardClose" style="margin-top:16px;width:100%;">Close</button>
+  `, true);
+  document.getElementById('scorecardClose').addEventListener('click', closeModal);
+  wireTabs('modal');
+}
+
 function render(){
-  document.getElementById('btnExportJson').classList.toggle('hidden', !state);
-  document.getElementById('btnExportCsv').classList.toggle('hidden', !state);
+  document.getElementById('topExportMenu').classList.toggle('hidden', !state || currentView==='home');
+  closeAllMenus();
+
+  if(currentView === 'home'){ renderHome(); return; }
 
   if(!state){ renderSetup(); return; }
   if(state.matchOver){ renderMatchOver(); return; }
@@ -1097,7 +1560,7 @@ function render(){
     renderFirstInningsCompleteBanner(inn);
     return;
   }
-  if(!inn.strikerName || !inn.nonStrikerName || !inn.currentBowler){
+  if(!inn.strikerName || !inn.currentBowler || inn.battedOrder.length===0){
     renderNeedsOpeners(inn);
     return;
   }
@@ -1119,25 +1582,27 @@ function fileStamp(){
   const d = new Date();
   return d.toISOString().slice(0,19).replace(/[:T]/g,'-');
 }
+function exportMatchJSON(m){
+  downloadFile(`weekend-cricket-match-${m.id||fileStamp()}.json`, JSON.stringify(m, null, 2), 'application/json');
+}
 function exportJSON(){
   if(!state) return;
-  downloadFile(`weekend-cricket-match-${fileStamp()}.json`, JSON.stringify(state, null, 2), 'application/json');
+  exportMatchJSON(state);
 }
 function csvEscape(v){
   const s = String(v===undefined||v===null? '' : v);
   if(/[",\n]/.test(s)) return '"' + s.replace(/"/g,'""') + '"';
   return s;
 }
-function exportCSV(){
-  if(!state) return;
+function buildCSVRows(m){
   const header = ["Innings","TeamBatting","TeamBowling","Over","BallDisplay","Batsman","Bowler","RunsOffBat","ExtraType","ExtraRuns","TotalRuns","IsWicket","WicketType","PlayerOut","Fielder","TeamRunsAfter","TeamWicketsAfter"];
   const rows = [header.join(',')];
-  state.innings.forEach((inn, idx)=>{
+  m.innings.forEach((inn, idx)=>{
     inn.timeline.forEach(t=>{
       rows.push([
         idx+1,
-        teamObj(inn.battingTeam).name,
-        teamObj(inn.bowlingTeam).name,
+        teamObjFor(m, inn.battingTeam).name,
+        teamObjFor(m, inn.bowlingTeam).name,
         t.over+1,
         t.ballDisplay,
         t.batsman,
@@ -1155,7 +1620,134 @@ function exportCSV(){
       ].map(csvEscape).join(','));
     });
   });
-  downloadFile(`weekend-cricket-match-${fileStamp()}.csv`, rows.join('\n'), 'text/csv');
+  return rows;
+}
+function exportMatchCSV(m){
+  downloadFile(`weekend-cricket-match-${m.id||fileStamp()}.csv`, buildCSVRows(m).join('\n'), 'text/csv');
+}
+function exportCSV(){
+  if(!state) return;
+  exportMatchCSV(state);
+}
+
+/* =========================================================
+   INSTALL / ADD TO HOME SCREEN
+   Built as a single offline file, so a real install prompt only
+   fires in browsers that support it (mainly Chrome/Edge/Android)
+   and generally only once this file is hosted somewhere (http/https)
+   rather than opened directly. We still wire up a manifest + icon so
+   that path works if/when it's hosted, and always offer manual
+   Add-to-Home-Screen instructions that work everywhere.
+   ========================================================= */
+function setupPWA(){
+  try{
+    const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46 36" width="192" height="192">
+      <rect width="46" height="36" rx="8" fill="#082a3d"/>
+      <rect x="15" y="12" width="2.6" height="18" rx="1" fill="#f4eedb"/>
+      <rect x="21" y="10" width="2.6" height="20" rx="1" fill="#f4eedb"/>
+      <rect x="27" y="12" width="2.6" height="18" rx="1" fill="#f4eedb"/>
+      <rect x="15.3" y="8.4" width="6" height="2" rx="1" fill="#f4eedb"/>
+      <rect x="21.3" y="6.8" width="6" height="2" rx="1" fill="#f4eedb"/>
+      <g transform="rotate(-20 9 27)">
+        <rect x="6.5" y="15" width="6" height="15" rx="2.4" fill="#dcbb87" stroke="#8a6d3f" stroke-width="1"/>
+        <rect x="8" y="3" width="3" height="13" rx="1.4" fill="#5a3a1e"/>
+      </g>
+      <circle cx="37" cy="9" r="6" fill="#9c2b23" stroke="#6e1a15" stroke-width="1"/>
+    </svg>`;
+    const iconUrl = URL.createObjectURL(new Blob([iconSvg], {type:'image/svg+xml'}));
+
+    let iconLink = document.querySelector('link[rel="icon"]');
+    if(!iconLink){ iconLink = document.createElement('link'); iconLink.rel='icon'; document.head.appendChild(iconLink); }
+    iconLink.href = iconUrl;
+
+    let appleLink = document.querySelector('link[rel="apple-touch-icon"]');
+    if(!appleLink){ appleLink = document.createElement('link'); appleLink.rel='apple-touch-icon'; document.head.appendChild(appleLink); }
+    appleLink.href = iconUrl;
+
+    const manifest = {
+      name: "Weekend Cricket Fun",
+      short_name: "Cricket Fun",
+      start_url: ".",
+      display: "standalone",
+      background_color: "#082a3d",
+      theme_color: "#04A3ED",
+      icons: [{src: iconUrl, sizes: "192x192", type: "image/svg+xml"}]
+    };
+    const manifestUrl = URL.createObjectURL(new Blob([JSON.stringify(manifest)], {type:'application/manifest+json'}));
+    let manifestLink = document.querySelector('link[rel="manifest"]');
+    if(!manifestLink){ manifestLink = document.createElement('link'); manifestLink.rel='manifest'; document.head.appendChild(manifestLink); }
+    manifestLink.href = manifestUrl;
+  }catch(e){ console.warn("PWA setup skipped", e); }
+
+  let deferredInstallPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e)=>{
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    const btn = document.getElementById('btnInstallApp');
+    if(btn) btn.classList.remove('hidden');
+  });
+  const installBtn = document.getElementById('btnInstallApp');
+  if(installBtn){
+    installBtn.addEventListener('click', async ()=>{
+      if(!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      installBtn.classList.add('hidden');
+    });
+  }
+  const howToBtn = document.getElementById('btnHowToInstall');
+  if(howToBtn) howToBtn.addEventListener('click', openInstallHelpModal);
+}
+
+function openInstallHelpModal(){
+  openModal(`
+    <h3>Add to your home screen</h3>
+    <div class="sub">Works as a shortcut either way; you get the full one-tap "Install" experience once this file is hosted somewhere (like GitHub Pages) rather than opened directly from disk.</div>
+    <div style="font-size:13.5px;line-height:1.7;">
+      <b>iPhone / iPad (Safari):</b> tap the Share icon, then "Add to Home Screen".<br><br>
+      <b>Android (Chrome):</b> tap the ⋮ menu, then "Add to Home screen" or "Install app".<br><br>
+      <b>Desktop (Chrome / Edge):</b> click the install icon in the address bar, or the ⋮ menu → "Install Weekend Cricket Fun".
+    </div>
+    <button class="primary-btn" id="installHelpClose">Got it</button>
+  `);
+  document.getElementById('installHelpClose').addEventListener('click', closeModal);
+}
+
+/* =========================================================
+   ACTION DROPDOWN MENUS (Export JSON/CSV, etc.)
+   ========================================================= */
+function closeAllMenus(){
+  document.querySelectorAll('.menu-panel').forEach(p => p.classList.add('hidden'));
+}
+document.addEventListener('click', (e)=>{
+  if(!e.target.closest('.action-menu')) closeAllMenus();
+});
+function buildExportMenuHTML(idPrefix){
+  return `
+    <div class="action-menu">
+      <button class="export-btn menu-toggle" data-menu-toggle="${idPrefix}">Export ▾</button>
+      <div class="menu-panel hidden" id="menuPanel-${idPrefix}">
+        <button class="menu-item" id="menuExportJson-${idPrefix}">Export JSON</button>
+        <button class="menu-item" id="menuExportCsv-${idPrefix}">Export CSV</button>
+      </div>
+    </div>
+  `;
+}
+function wireExportMenu(idPrefix, matchObj){
+  const toggle = document.querySelector(`[data-menu-toggle="${idPrefix}"]`);
+  const panel = document.getElementById(`menuPanel-${idPrefix}`);
+  if(!toggle || !panel) return;
+  toggle.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    const willOpen = panel.classList.contains('hidden');
+    closeAllMenus();
+    if(willOpen) panel.classList.remove('hidden');
+  });
+  const jsonBtn = document.getElementById(`menuExportJson-${idPrefix}`);
+  const csvBtn = document.getElementById(`menuExportCsv-${idPrefix}`);
+  if(jsonBtn) jsonBtn.addEventListener('click', ()=>{ exportMatchJSON(matchObj); closeAllMenus(); });
+  if(csvBtn) csvBtn.addEventListener('click', ()=>{ exportMatchCSV(matchObj); closeAllMenus(); });
 }
 
 /* =========================================================
@@ -1164,6 +1756,7 @@ function exportCSV(){
 function confirmNewMatch(){
   if(!state){
     clearState();
+    currentView = 'auto';
     render();
     return;
   }
@@ -1173,6 +1766,7 @@ function confirmNewMatch(){
     confirmLabel: "Start new match",
     onConfirm: ()=>{
       clearState();
+      currentView = 'auto';
       render();
     }
   });
@@ -1180,26 +1774,39 @@ function confirmNewMatch(){
 
 // Explicit "delete saved match" action, offered once a match has ended, so
 // the person can clear their local storage without necessarily jumping
-// straight into a new match setup.
+// straight into a new match setup. Also removes the match's entry from
+// Previous games, since it's the same match.
 function deleteSavedMatch(){
   openConfirmModal({
     title: "Delete this match?",
-    message: "This permanently removes the saved match from local storage on this device. Export it first if you want to keep a copy.",
+    message: "This permanently removes the saved match from local storage on this device, including its entry under Previous games. Export it first if you want to keep a copy.",
     confirmLabel: "Delete match",
     onConfirm: ()=>{
+      if(state) removeFromHistory(state.id);
       clearState();
+      currentView = 'auto';
       render();
     }
   });
 }
+document.getElementById('btnHome').addEventListener('click', ()=>{ currentView = 'home'; render(); });
 document.getElementById('btnNewMatch').addEventListener('click', confirmNewMatch);
-document.getElementById('btnExportJson').addEventListener('click', exportJSON);
-document.getElementById('btnExportCsv').addEventListener('click', exportCSV);
+document.querySelector('[data-menu-toggle="top"]').addEventListener('click', (e)=>{
+  e.stopPropagation();
+  const panel = document.getElementById('menuPanel-top');
+  const willOpen = panel.classList.contains('hidden');
+  closeAllMenus();
+  if(willOpen) panel.classList.remove('hidden');
+});
+document.getElementById('menuExportJson-top').addEventListener('click', ()=>{ if(state) exportMatchJSON(state); closeAllMenus(); });
+document.getElementById('menuExportCsv-top').addEventListener('click', ()=>{ if(state) exportMatchCSV(state); closeAllMenus(); });
 
 /* =========================================================
    BOOT
    ========================================================= */
 loadState();
+loadHistory();
+setupPWA();
 render();
 
 })();
