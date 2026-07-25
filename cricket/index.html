@@ -11,25 +11,40 @@
 <title>Weekend Cricket Fun — Offline Cricket Scorer</title>
 <style>
   :root{
-    --pitch:#082a3d;
+    --pitch:#071b2a;
+    --pitch-2:#0d3a58;
     --grass:#04a3ed;
-    --grass-light:#3dc3f7;
+    --grass-light:#5fd4ff;
+    --grass-dark:#0577b3;
+    --success:#22c55e;
+    --success-dark:#159249;
     --cream:#f4eedb;
-    --chalk:#fbf9f2;
-    --ink:#1c2018;
-    --ink-soft:#5a6157;
-    --leather:#9c2b23;
-    --leather-light:#c1443a;
-    --gold:#c9a227;
-    --line:#d9d0b4;
-    --shadow: 0 8px 24px rgba(4,44,66,0.18);
+    --chalk:#fbfdff;
+    --ink:#0f2233;
+    --ink-soft:#5c7488;
+    --leather:#e2483a;
+    --leather-light:#ff7a67;
+    --leather-dark:#b8291c;
+    --gold:#eab308;
+    --gold-dark:#a8790a;
+    --line: rgba(15,34,51,0.14);
+    --glass: rgba(255,255,255,0.62);
+    --glass-strong: rgba(255,255,255,0.86);
+    --glass-border: rgba(255,255,255,0.6);
+    --glass-border-soft: rgba(255,255,255,0.4);
+    --blur: 20px;
+    --shadow: 0 14px 40px rgba(3,20,34,0.35), inset 0 1px 0 rgba(255,255,255,0.55);
+    --shadow-sm: 0 6px 18px rgba(3,20,34,0.22), inset 0 1px 0 rgba(255,255,255,0.5);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:
-      radial-gradient(1200px 600px at 50% -200px, #0f5f86 0%, var(--pitch) 55%),
-      var(--pitch);
+      radial-gradient(900px 520px at 12% -10%, rgba(4,163,237,0.35) 0%, transparent 60%),
+      radial-gradient(700px 480px at 100% 8%, rgba(34,197,94,0.16) 0%, transparent 62%),
+      radial-gradient(1000px 700px at 50% 110%, rgba(4,163,237,0.22) 0%, transparent 65%),
+      linear-gradient(180deg, var(--pitch-2) 0%, var(--pitch) 45%, #051423 100%);
+    background-attachment: fixed;
     color:var(--ink);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     min-height:100vh;
@@ -40,32 +55,43 @@
     font-variant-numeric: tabular-nums;
   }
   .wrap{max-width:920px;margin:0 auto;}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:rgba(4,163,237,0.35);border-radius:8px;}
+  ::-webkit-scrollbar-thumb:hover{background:rgba(4,163,237,0.55);}
 
   /* ---------- Top bar ---------- */
   .topbar{
     display:flex;align-items:center;justify-content:space-between;
-    color:var(--chalk);padding:6px 4px 16px 4px;flex-wrap:wrap;gap:10px;
+    color:var(--chalk);padding:6px 4px 18px 4px;flex-wrap:wrap;gap:10px;
   }
-  .brand{display:flex;align-items:center;gap:10px;}
-  .brand .brandmark{flex:none;display:block;}
-  .brand h1{font-size:19px;margin:0;letter-spacing:0.3px;font-weight:700;}
-  .brand span.tag{display:block;font-size:11px;color:#cfe4d6;font-weight:400;letter-spacing:0.4px;}
+  .brand{display:flex;align-items:center;gap:11px;}
+  .brand .brandmark{flex:none;display:block;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.35));}
+  .brand h1{font-size:19px;margin:0;letter-spacing:0.3px;font-weight:700;text-shadow:0 2px 12px rgba(0,0,0,0.25);}
+  .brand span.tag{display:block;font-size:11px;color:#bfe6fa;font-weight:400;letter-spacing:0.4px;}
   .topbtns{display:flex;gap:8px;flex-wrap:wrap;}
 
   button{
-    font-family:inherit;cursor:pointer;border:none;border-radius:10px;
-    font-weight:600;transition:transform .08s ease, filter .12s ease;
+    font-family:inherit;cursor:pointer;border:none;border-radius:11px;
+    font-weight:600;transition:transform .12s ease, filter .12s ease, background .15s ease, box-shadow .15s ease;
   }
   button:active{transform:scale(0.96);}
   .btn-ghost{
-    background:rgba(255,255,255,0.08);color:var(--chalk);
-    padding:8px 12px;font-size:12.5px;border:1px solid rgba(255,255,255,0.18);
+    background:rgba(255,255,255,0.10);color:var(--chalk);
+    padding:8px 13px;font-size:12.5px;border:1px solid rgba(255,255,255,0.22);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
   }
-  .btn-ghost:hover{background:rgba(255,255,255,0.16);}
+  .btn-ghost:hover{background:rgba(255,255,255,0.2);transform:translateY(-1px);}
 
-  /* ---------- Cards ---------- */
+  /* ---------- Glass surfaces (cards / panels / modals) ---------- */
   .card{
-    background:var(--chalk);border-radius:16px;padding:22px;
+    background:var(--glass);
+    backdrop-filter: blur(var(--blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
+    border:1px solid var(--glass-border);
+    border-radius:20px;padding:22px;
     box-shadow:var(--shadow);margin-bottom:16px;
   }
   .card h2{margin:0 0 4px 0;font-size:15px;letter-spacing:.4px;color:var(--ink);}
@@ -73,116 +99,144 @@
 
   label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin:14px 0 5px;letter-spacing:.3px;text-transform:uppercase;}
   input[type=text], input[type=number], textarea, select{
-    width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid var(--line);
-    font-family:inherit;font-size:14.5px;background:#fff;color:var(--ink);
+    width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);
+    font-family:inherit;font-size:14.5px;background:rgba(255,255,255,0.75);color:var(--ink);
+    transition:border-color .15s ease, box-shadow .15s ease;
   }
   textarea{resize:vertical;min-height:84px;line-height:1.5;}
-  input:focus, textarea:focus, select:focus{outline:2px solid var(--grass-light);outline-offset:1px;border-color:var(--grass-light);}
+  input:focus, textarea:focus, select:focus{outline:none;border-color:var(--grass);box-shadow:0 0 0 3px rgba(4,163,237,0.18);}
 
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   @media (max-width:640px){.row2{grid-template-columns:1fr;}}
 
   .primary-btn{
-    background:var(--grass);color:#fff;padding:13px 18px;font-size:14.5px;
-    width:100%;margin-top:20px;border-radius:11px;letter-spacing:.3px;
+    background:linear-gradient(160deg, var(--grass-light), var(--grass) 55%, var(--grass-dark));
+    color:#fff;padding:13px 18px;font-size:14.5px;
+    width:100%;margin-top:20px;border-radius:13px;letter-spacing:.3px;
+    box-shadow:0 8px 20px rgba(4,163,237,0.35), inset 0 1px 0 rgba(255,255,255,0.4);
   }
-  .primary-btn:hover{background:var(--grass-light);}
-  .primary-btn:disabled{background:#a8b3ac;cursor:not-allowed;}
-  .leather-btn{background:var(--leather);color:#fff;}
-  .leather-btn:hover{background:var(--leather-light);}
+  .primary-btn:hover{filter:brightness(1.08);transform:translateY(-1px);}
+  .primary-btn:disabled{background:#a8b3ac;cursor:not-allowed;box-shadow:none;}
+  .leather-btn{background:linear-gradient(160deg, var(--leather-light), var(--leather) 60%, var(--leather-dark));color:#fff;box-shadow:0 8px 20px rgba(226,72,58,0.35), inset 0 1px 0 rgba(255,255,255,0.35);}
+  .leather-btn:hover{filter:brightness(1.08);}
 
   .radio-pick{display:flex;gap:10px;margin-top:4px;}
   .radio-pick label{
-    flex:1;text-align:center;border:1.5px solid var(--line);border-radius:9px;
+    flex:1;text-align:center;border:1.5px solid var(--line);border-radius:10px;
     padding:10px;font-size:13.5px;font-weight:600;text-transform:none;color:var(--ink);
-    margin:0;cursor:pointer;
+    margin:0;cursor:pointer;background:rgba(255,255,255,0.4);transition:all .15s ease;
   }
   .radio-pick input{display:none;}
-  .radio-pick input:checked + span{color:var(--grass);}
-  .radio-pick label.active{border-color:var(--grass);background:#eaf6fd;}
+  .radio-pick input:checked + span{color:var(--grass-dark);}
+  .radio-pick label.active{border-color:var(--grass);background:rgba(4,163,237,0.12);box-shadow:0 0 0 3px rgba(4,163,237,0.12);}
 
   /* ---------- Scoreboard hero ---------- */
   .hero{
-    background:linear-gradient(160deg, var(--grass) 0%, #0c3b52 100%);
-    color:var(--chalk);border-radius:16px;padding:22px 24px;box-shadow:var(--shadow);
+    background:linear-gradient(160deg, rgba(95,212,255,0.9) 0%, rgba(4,163,237,0.88) 45%, rgba(7,42,64,0.92) 100%);
+    backdrop-filter: blur(var(--blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
+    color:var(--chalk);border-radius:20px;padding:22px 24px;
+    box-shadow:0 18px 46px rgba(3,20,34,0.4), inset 0 1px 0 rgba(255,255,255,0.4);
+    border:1px solid rgba(255,255,255,0.35);
     margin-bottom:16px;position:relative;overflow:hidden;
   }
   .hero::before{
     content:"";position:absolute;inset:0;
-    background:repeating-linear-gradient(115deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 26px);
+    background:repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 26px);
     pointer-events:none;
   }
   .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;}
-  .hero-teams{font-size:13px;color:#d7ecf7;font-weight:600;letter-spacing:.3px;}
-  .hero-innings{font-size:11.5px;color:#b9d9ec;text-transform:uppercase;letter-spacing:.6px;}
-  .hero-score{display:flex;align-items:baseline;gap:14px;margin-top:6px;flex-wrap:wrap;}
-  .hero-score .big{font-size:52px;font-weight:700;line-height:1;}
-  .hero-score .overs{font-size:17px;color:#dcf1fb;}
-  .hero-meta{display:flex;gap:18px;margin-top:12px;flex-wrap:wrap;font-size:12.5px;color:#cfe7f5;}
+  .hero-teams{font-size:13px;color:#eaf8ff;font-weight:600;letter-spacing:.3px;}
+  .hero-innings{font-size:11.5px;color:#d3f0fc;text-transform:uppercase;letter-spacing:.6px;background:rgba(255,255,255,0.16);padding:3px 9px;border-radius:20px;}
+  .hero-score{display:flex;align-items:baseline;gap:14px;margin-top:10px;flex-wrap:wrap;}
+  .hero-score .big{font-size:52px;font-weight:700;line-height:1;text-shadow:0 4px 18px rgba(0,0,0,0.25);}
+  .hero-score .overs{font-size:17px;color:#eaf8ff;}
+  .hero-meta{display:flex;gap:18px;margin-top:12px;flex-wrap:wrap;font-size:12.5px;color:#e3f5fc;}
   .hero-meta b{color:#fff;}
-  .target-note{margin-top:8px;font-size:13px;color:var(--gold);font-weight:600;}
+  .target-note{margin-top:8px;font-size:13px;color:#ffe8a3;font-weight:600;}
 
   /* ---------- Batsmen / bowler panel ---------- */
   .panels{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;margin-bottom:16px;}
   @media (max-width:700px){.panels{grid-template-columns:1fr;}}
-  .panel{background:var(--chalk);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);}
+  .panel{
+    background:var(--glass);
+    backdrop-filter: blur(var(--blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
+    border:1px solid var(--glass-border);
+    border-radius:16px;padding:16px 18px;box-shadow:var(--shadow-sm);
+  }
   .panel h3{margin:0 0 10px;font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-soft);}
   table.stat{width:100%;border-collapse:collapse;font-size:13.5px;}
   table.stat td{padding:5px 2px;}
   table.stat tr.on-strike td:first-child::after{content:" *";color:var(--leather);font-weight:700;}
   table.stat td.num{text-align:right;color:var(--ink-soft);}
   table.stat tr.on-strike{font-weight:700;}
+  table.stat tr.on-strike td:first-child{color:var(--grass-dark);}
 
   /* ---------- Over pills ---------- */
   .overpills{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 4px;}
   .pill{
-    min-width:30px;height:30px;padding:0 6px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    min-width:30px;height:30px;padding:0 6px;border-radius:9px;display:flex;align-items:center;justify-content:center;
     font-size:12.5px;font-weight:700;color:#fff;background:var(--ink-soft);
+    box-shadow:0 3px 8px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.25);
   }
-  .pill.run0{background:#8f978c;}
-  .pill.run4{background:var(--gold);color:#3a2e00;}
-  .pill.run6{background:var(--leather);}
-  .pill.wicket{background:var(--leather);}
+  .pill.run0{background:linear-gradient(160deg,#9aa4ac,#77828b);}
+  .pill.run4{background:linear-gradient(160deg,var(--success),var(--success-dark));}
+  .pill.run6{background:linear-gradient(160deg,#16d17a,#0e7a44);}
+  .pill.wicket{background:linear-gradient(160deg,var(--leather-light),var(--leather-dark));}
   .w-badge{
     display:inline-flex;align-items:center;justify-content:center;
-    background:var(--leather);color:#fff;font-weight:800;
-    width:20px;height:20px;border-radius:5px;font-size:12px;line-height:1;
-    vertical-align:middle;
+    background:linear-gradient(160deg,var(--leather-light),var(--leather-dark));color:#fff;font-weight:800;
+    width:20px;height:20px;border-radius:6px;font-size:12px;line-height:1;
+    vertical-align:middle;box-shadow:0 2px 6px rgba(184,41,28,0.4);
   }
-  .pill.extra{background:var(--grass-light);}
+  .pill.extra{background:linear-gradient(160deg,var(--grass-light),var(--grass-dark));}
   .overpills.prev .pill{opacity:0.55;transform:scale(0.82);transform-origin:left center;}
 
   /* ---------- Ball entry ---------- */
   .entry h3{margin:0 0 10px;font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-soft);}
   .runs-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;}
   .run-btn{
-    aspect-ratio:1;border-radius:12px;background:#eef2ec;color:var(--ink);font-size:18px;font-weight:700;
-    border:1.5px solid var(--line);
+    aspect-ratio:1;border-radius:13px;background:rgba(255,255,255,0.55);color:var(--ink);font-size:18px;font-weight:700;
+    border:1.5px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,0.5);
   }
-  .run-btn:hover{background:#e3ece5;}
-  .run-btn.four{border-color:var(--gold);color:#8a6d00;}
-  .run-btn.six{background:var(--leather);color:#fff;border-color:var(--leather);}
-  .run-btn.six:hover{background:var(--leather-light);}
+  .run-btn:hover{background:rgba(255,255,255,0.8);transform:translateY(-1px);}
+  .run-btn.four{
+    background:linear-gradient(160deg, var(--success), var(--success-dark));
+    border-color:var(--success-dark);color:#fff;
+    box-shadow:0 6px 16px rgba(34,197,94,0.35), inset 0 1px 0 rgba(255,255,255,0.35);
+  }
+  .run-btn.four:hover{filter:brightness(1.08);}
+  .run-btn.six{
+    background:linear-gradient(160deg, #16d17a, #0c6b3c);
+    border-color:#0c6b3c;color:#fff;
+    box-shadow:0 6px 16px rgba(14,122,68,0.4), inset 0 1px 0 rgba(255,255,255,0.35);
+  }
+  .run-btn.six:hover{filter:brightness(1.1);}
 
   .extras-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;}
   .custom-score-row{display:flex;gap:8px;margin-top:10px;}
   .custom-score-row input{flex:1;}
-  .custom-score-row button{white-space:nowrap;background:#eef2ec;color:var(--ink);border:1.5px solid var(--line);padding:0 16px;}
-  .custom-score-row button:hover{background:#e3ece5;}
-  .extra-btn{padding:11px 4px;background:#fff;border:1.5px solid var(--grass-light);color:var(--grass);font-size:12.5px;border-radius:10px;}
-  .extra-btn:hover{background:#eaf6fd;}
+  .custom-score-row button{white-space:nowrap;background:rgba(255,255,255,0.55);color:var(--ink);border:1.5px solid var(--line);padding:0 16px;}
+  .custom-score-row button:hover{background:rgba(255,255,255,0.8);}
+  .extra-btn{padding:11px 4px;background:rgba(255,255,255,0.55);border:1.5px solid var(--grass-light);color:var(--grass-dark);font-size:12.5px;border-radius:11px;}
+  .extra-btn:hover{background:rgba(4,163,237,0.12);}
 
   .action-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
-  .wicket-btn{padding:12px;background:var(--leather);color:#fff;font-size:13.5px;border-radius:10px;}
-  .wicket-btn:hover{background:var(--leather-light);}
-  .undo-btn{padding:12px;background:#ece7d8;color:var(--ink);font-size:13.5px;border-radius:10px;border:1.5px solid var(--line);}
-  .undo-btn:hover{background:#e2dcc7;}
+  .wicket-btn{
+    padding:12px;background:linear-gradient(160deg,var(--leather-light),var(--leather-dark));color:#fff;font-size:13.5px;border-radius:12px;
+    box-shadow:0 6px 16px rgba(184,41,28,0.35), inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .wicket-btn:hover{filter:brightness(1.08);}
+  .undo-btn{padding:12px;background:rgba(255,255,255,0.55);color:var(--ink);font-size:13.5px;border-radius:12px;border:1.5px solid var(--line);}
+  .undo-btn:hover{background:rgba(255,255,255,0.8);}
   .undo-btn:disabled{opacity:0.4;cursor:not-allowed;}
 
   .quickpick{
-    margin-top:10px;padding:14px;background:#f6f2e4;border:1.5px dashed var(--gold);border-radius:12px;
+    margin-top:10px;padding:14px;background:rgba(234,179,8,0.14);border:1.5px dashed var(--gold-dark);border-radius:13px;
+    backdrop-filter: blur(10px);
   }
-  .quickpick .qtitle{font-size:12.5px;font-weight:700;color:#8a6d00;margin-bottom:8px;}
+  .quickpick .qtitle{font-size:12.5px;font-weight:700;color:var(--gold-dark);margin-bottom:8px;}
   .quickpick .runs-grid{grid-template-columns:repeat(5,1fr);}
   .quickpick .run-btn{font-size:15px;}
   .quickpick .cancel{margin-top:8px;width:100%;background:transparent;border:none;color:var(--ink-soft);font-size:12px;text-decoration:underline;padding:4px;}
@@ -190,15 +244,18 @@
   /* ---------- Action dropdown menu (Export JSON / CSV etc.) ---------- */
   .action-menu{position:relative;display:inline-block;}
   .menu-panel{
-    position:absolute;top:calc(100% + 6px);right:0;background:var(--chalk);border:1px solid var(--line);
-    border-radius:10px;box-shadow:0 12px 28px rgba(0,0,0,0.22);padding:6px;min-width:160px;z-index:60;
+    position:absolute;top:calc(100% + 6px);right:0;background:var(--glass-strong);
+    backdrop-filter: blur(var(--blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
+    border:1px solid var(--glass-border);
+    border-radius:12px;box-shadow:0 16px 34px rgba(3,20,34,0.32);padding:6px;min-width:160px;z-index:60;
   }
   .menu-panel.hidden{display:none;}
   .menu-item{
     display:block;width:100%;text-align:left;background:transparent;border:none;color:var(--ink);
-    padding:9px 10px;font-size:13px;font-weight:600;border-radius:6px;
+    padding:9px 10px;font-size:13px;font-weight:600;border-radius:8px;
   }
-  .menu-item:hover{background:#eef2ec;}
+  .menu-item:hover{background:rgba(4,163,237,0.12);}
   .menu-item.danger{color:var(--leather);}
 
   /* ---------- Tabs (Scorecard / Commentary) ---------- */
@@ -208,42 +265,58 @@
     color:var(--ink-soft);border-bottom:2.5px solid transparent;border-radius:0;margin-bottom:-1.5px;
   }
   .tab-btn:hover{color:var(--ink);}
-  .tab-btn.active{color:var(--grass);border-bottom-color:var(--grass);}
+  .tab-btn.active{color:var(--grass-dark);border-bottom-color:var(--grass);}
   .tab-panel.hidden{display:none;}
 
   /* ---------- Commentary ---------- */
   .commentary{max-height:260px;overflow-y:auto;font-size:13px;}
   .commentary .entry-line{
-    display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #ede8d6;align-items:baseline;
+    display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(15,34,51,0.08);align-items:baseline;
   }
   .commentary .entry-line:last-child{border-bottom:none;}
   .commentary .ov{color:var(--ink-soft);font-size:11.5px;min-width:36px;}
   .commentary .desc{flex:1;}
   .commentary .desc b{color:var(--leather);}
   .commentary .tag{
-    font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:5px;background:var(--grass);color:#fff;
+    font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:6px;
+    background:linear-gradient(160deg,var(--grass-light),var(--grass-dark));color:#fff;
   }
 
   /* ---------- Modal ---------- */
   .modal-overlay{
-    position:fixed;inset:0;background:rgba(6,26,36,0.55);display:flex;align-items:center;justify-content:center;
+    position:fixed;inset:0;background:rgba(4,15,24,0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display:flex;align-items:center;justify-content:center;
     padding:18px;z-index:50;
   }
-  .modal{background:var(--chalk);border-radius:16px;padding:24px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.4);max-height:88vh;overflow-y:auto;}
+  .modal{
+    background:var(--glass-strong);
+    backdrop-filter: blur(var(--blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
+    border:1px solid var(--glass-border);
+    border-radius:18px;padding:24px;max-width:440px;width:100%;
+    box-shadow:0 24px 64px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.5);
+    max-height:88vh;overflow-y:auto;
+  }
   .modal.modal-wide{max-width:640px;}
   .modal h3{margin:0 0 4px;font-size:16px;}
   .modal .sub{color:var(--ink-soft);font-size:12.5px;margin-bottom:14px;}
 
   .footer-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:18px 0 30px;}
   .footer-actions button{padding:10px 16px;font-size:12.5px;}
-  .export-btn{background:var(--chalk);color:var(--ink);border:1.5px solid var(--line);}
-  .export-btn:hover{background:#efe9d6;}
+  .export-btn{background:rgba(255,255,255,0.55);color:var(--ink);border:1.5px solid var(--line);}
+  .export-btn:hover{background:rgba(255,255,255,0.85);}
 
   .empty-note{color:var(--ink-soft);font-size:13px;text-align:center;padding:20px 0;}
 
   .result-banner{
-    text-align:center;padding:26px 20px;background:linear-gradient(160deg,var(--gold),#a9821a);
-    border-radius:16px;color:#3a2e00;box-shadow:var(--shadow);margin-bottom:16px;
+    text-align:center;padding:26px 20px;
+    background:linear-gradient(160deg, rgba(255,222,120,0.92), rgba(168,121,10,0.92));
+    backdrop-filter: blur(var(--blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
+    border:1px solid rgba(255,255,255,0.4);
+    border-radius:20px;color:#3a2e00;box-shadow:var(--shadow);margin-bottom:16px;
   }
   .result-banner h2{margin:0 0 6px;font-size:22px;}
   .result-banner p{margin:0;font-size:14px;}
@@ -332,6 +405,9 @@ function loadState(){
     const parsed = JSON.parse(raw);
     state = parsed.state;
     historyStack = parsed.historyStack || [];
+    if(state && Array.isArray(state.innings)){
+      state.innings.forEach(inn => { if(!inn.retiredNames) inn.retiredNames = []; });
+    }
     return !!state;
   }catch(e){ return false; }
 }
@@ -418,6 +494,7 @@ function newInningsObj(battingKey, bowlingKey, target){
     previousBowler: null,
     battedOrder: [],       // names who have come to the crease
     outNames: [],
+    retiredNames: [],      // currently off the field having retired hurt (not out — can return anytime a slot opens)
     batsmanStats: {},      // name -> {runs, balls, fours, sixes, out, howOut}
     bowlerStats: {},       // name -> {balls, runs, wickets}
     timeline: [],          // full ball log for this innings
@@ -430,6 +507,10 @@ function ensureBatsman(inn, name){
 }
 function ensureBowler(inn, name){
   if(!inn.bowlerStats[name]) inn.bowlerStats[name] = {balls:0, runs:0, wickets:0};
+}
+function ensureRetiredNames(inn){
+  if(!Array.isArray(inn.retiredNames)) inn.retiredNames = [];
+  return inn.retiredNames;
 }
 
 function startMatch(cfg){
@@ -907,8 +988,9 @@ function renderScoring(inn){
         <button class="btn-ghost" id="btnAddCustomRuns">Add runs</button>
       </div>
       ` : ''}
-      <div class="action-row">
+      <div class="action-row" style="grid-template-columns:1fr 1fr 1fr;">
         <button class="wicket-btn" id="btnWicket"><span class="w-badge">W</span> Wicket</button>
+        <button class="undo-btn" id="btnRetire" style="background:#eef2ec;color:var(--ink);border:1.5px solid var(--line);">Retire</button>
         <button class="undo-btn" id="btnUndo" ${historyStack.length? '' : 'disabled'}>Undo last ball</button>
       </div>
       <div id="quickpickHost"></div>
@@ -935,6 +1017,7 @@ function renderScoring(inn){
     btn.addEventListener('click', ()=> showExtraQuickpick(btn.dataset.extra));
   });
   document.getElementById('btnWicket').addEventListener('click', ()=> openWicketModal(inn));
+  document.getElementById('btnRetire').addEventListener('click', ()=> openRetireModal(inn));
   document.getElementById('btnUndo').addEventListener('click', undoLast);
   if(state.allowCustomScore){
     document.getElementById('btnToggleCustomRuns').addEventListener('click', ()=>{
@@ -1146,6 +1229,33 @@ function openConfirmModal({title, message, confirmLabel="Confirm", cancelLabel="
   });
 }
 
+function openRetireModal(inn){
+  openModal(`
+    <h3>Retire batsman</h3>
+    <div class="sub">Not a wicket — they can come back in later, any time a spot opens up at the crease.</div>
+    <label>Who is retiring</label>
+    <select id="retireWho">
+      <option value="striker">${esc(inn.strikerName)} (striker)</option>
+      ${inn.nonStrikerName ? `<option value="nonstriker">${esc(inn.nonStrikerName)} (non-striker)</option>` : ''}
+    </select>
+    <div class="action-row" style="margin-top:16px;">
+      <button class="undo-btn" id="retireCancel">Cancel</button>
+      <button class="primary-btn" id="retireConfirm">Confirm retirement</button>
+    </div>
+  `);
+  document.getElementById('retireCancel').addEventListener('click', closeModal);
+  document.getElementById('retireConfirm').addEventListener('click', ()=>{
+    const who = document.getElementById('retireWho').value;
+    const name = who === 'nonstriker' ? inn.nonStrikerName : inn.strikerName;
+    pushHistory();
+    ensureBatsman(inn, name);
+    if(!ensureRetiredNames(inn).includes(name)) inn.retiredNames.push(name);
+    saveState();
+    closeModal();
+    openNextBatsmanModal(inn, {playerOut: name}, false, {isRetirement: true});
+  });
+}
+
 function openWicketModal(inn){
   const battingPlayers = battingTeamPlayers(inn);
   const bowlingPlayers = bowlingTeamPlayers(inn);
@@ -1161,6 +1271,7 @@ function openWicketModal(inn){
       <option value="run out">Run out</option>
       <option value="stumped">Stumped</option>
       <option value="hit wicket">Hit wicket</option>
+      <option value="retired hurt">Retired hurt (not a wicket — can return later)</option>
       <option value="other">Other</option>
     </select>
 
@@ -1187,25 +1298,41 @@ function openWicketModal(inn){
 
     <div class="action-row" style="margin-top:16px;">
       <button class="undo-btn" id="wCancel">Cancel</button>
-      <button class="wicket-btn" id="wConfirm">Confirm wicket</button>
+      <button class="wicket-btn" id="wConfirm">Confirm</button>
     </div>
   `);
 
   const wType = document.getElementById('wType');
   const fielderWrap = document.getElementById('fielderWrap');
   const runOutRunsWrap = document.getElementById('runOutRunsWrap');
+  const wConfirmBtn = document.getElementById('wConfirm');
   function syncFields(){
     const v = wType.value;
     fielderWrap.classList.toggle('hidden', !(v==='caught' || v==='run out' || v==='stumped'));
     runOutRunsWrap.classList.toggle('hidden', v!=='run out');
+    wConfirmBtn.textContent = v==='retired hurt' ? 'Confirm retirement' : 'Confirm wicket';
   }
   wType.addEventListener('change', syncFields);
   syncFields();
 
   document.getElementById('wCancel').addEventListener('click', closeModal);
-  document.getElementById('wConfirm').addEventListener('click', ()=>{
+  wConfirmBtn.addEventListener('click', ()=>{
     const wicketType = wType.value;
     const outWho = document.getElementById('wWho').value;
+
+    if(wicketType === 'retired hurt'){
+      // Not a dismissal: doesn't count as a wicket and the player can come
+      // back in later, same as using the dedicated Retire button.
+      const name = outWho === 'nonstriker' ? inn.nonStrikerName : inn.strikerName;
+      pushHistory();
+      ensureBatsman(inn, name);
+      if(!ensureRetiredNames(inn).includes(name)) inn.retiredNames.push(name);
+      saveState();
+      closeModal();
+      openNextBatsmanModal(inn, {playerOut: name}, false, {isRetirement: true});
+      return;
+    }
+
     const fielder = fielderWrap.classList.contains('hidden') ? "" : document.getElementById('wFielder').value;
     const runOutRuns = runOutRunsWrap.classList.contains('hidden') ? 0 : parseInt(document.getElementById('wRunOutRuns').value,10);
 
@@ -1220,17 +1347,33 @@ function openWicketModal(inn){
   });
 }
 
-function openNextBatsmanModal(inn, lastEntry, thenNeedsBowler){
+function openNextBatsmanModal(inn, lastEntry, thenNeedsBowler, opts){
+  opts = opts || {};
+  const isRetirement = !!opts.isRetirement;
   const battingPlayers = battingTeamPlayers(inn);
   const available = battingPlayers.filter(p => !inn.outNames.includes(p) && p !== inn.strikerName && p !== inn.nonStrikerName);
+
   if(available.length===0){
-    if(state.lastManStands){
-      // Last man stands: the not-out batsman keeps playing alone.
+    // Retiring is never a dismissal, so the surviving partner always keeps
+    // batting solo — this doesn't depend on the "last man stands" setting,
+    // which only governs what happens after an actual wicket.
+    const handOverToSurvivor = isRetirement || state.lastManStands;
+    if(handOverToSurvivor){
       if(inn.strikerName === lastEntry.playerOut){
         inn.strikerName = inn.nonStrikerName;
       }
       inn.nonStrikerName = null;
+      if(!inn.strikerName){
+        // Truly nobody left at the crease (e.g. both batsmen have now
+        // retired) — can't continue, so end the innings here.
+        inn.complete = true;
+      }
       saveState();
+      if(inn.complete){
+        finishMatchIfNeeded();
+        render();
+        return;
+      }
       if(thenNeedsBowler) openNewOverModal(inn); else render();
       return;
     }
@@ -1240,15 +1383,16 @@ function openNextBatsmanModal(inn, lastEntry, thenNeedsBowler){
     return;
   }
   openModal(`
-    <h3><span class="w-badge">W</span> Next batsman</h3>
-    <div class="sub">${esc(lastEntry.playerOut)} is out. Who's coming in?</div>
-    <select id="nextBatsman">${available.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('')}</select>
+    <h3>${isRetirement ? 'Next batsman' : '<span class="w-badge">W</span> Next batsman'}</h3>
+    <div class="sub">${esc(lastEntry.playerOut)} ${isRetirement ? 'has retired hurt' : 'is out'}. Who's coming in?</div>
+    <select id="nextBatsman">${available.map(p=>`<option value="${esc(p)}">${esc(p)}${ensureRetiredNames(inn).includes(p) ? ' (retired hurt — returning)' : ''}</option>`).join('')}</select>
     <button class="primary-btn" id="confirmNextBatsman">Confirm</button>
   `);
   document.getElementById('confirmNextBatsman').addEventListener('click', ()=>{
     const name = document.getElementById('nextBatsman').value;
     ensureBatsman(inn, name);
     inn.battedOrder.push(name);
+    inn.retiredNames = ensureRetiredNames(inn).filter(n => n !== name); // back from retirement, if applicable
     if(inn.strikerName === lastEntry.playerOut){
       inn.strikerName = name;
     } else if(inn.nonStrikerName === lastEntry.playerOut){
@@ -1509,7 +1653,17 @@ function buildScorecardHTML(m){
       const s = inn.batsmanStats[name] || {runs:0, balls:0, fours:0, sixes:0, out:false, howOut:'', fielder:''};
       const sr = s.balls ? ((s.runs/s.balls)*100).toFixed(1) : '0.0';
       const isAtCrease = (name===inn.strikerName || name===inn.nonStrikerName) && !s.out;
-      const dismissal = s.out ? (esc(s.howOut) + (s.fielder? ' ('+esc(s.fielder)+')':'')) : (isAtCrease ? 'not out' : 'did not bat');
+      const isRetiredNow = (inn.retiredNames||[]).includes(name) && !s.out;
+      let dismissal;
+      if(s.out){
+        dismissal = esc(s.howOut) + (s.fielder? ' ('+esc(s.fielder)+')':'');
+      } else if(isAtCrease){
+        dismissal = 'not out';
+      } else if(isRetiredNow){
+        dismissal = 'retired hurt';
+      } else {
+        dismissal = 'did not bat';
+      }
       return `<tr><td>${esc(name)}</td><td class="num">${s.runs}</td><td class="num">${s.balls}</td><td class="num">${s.fours}</td><td class="num">${s.sixes}</td><td class="num">${sr}</td></tr>
         <tr><td colspan="6" style="font-size:11px;color:var(--ink-soft);padding-top:0;padding-bottom:8px;">${dismissal}</td></tr>`;
     }).join('');
