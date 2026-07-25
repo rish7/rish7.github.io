@@ -120,15 +120,25 @@
   .leather-btn{background:linear-gradient(160deg, var(--leather-light), var(--leather) 60%, var(--leather-dark));color:#fff;box-shadow:0 8px 20px rgba(226,72,58,0.35), inset 0 1px 0 rgba(255,255,255,0.35);}
   .leather-btn:hover{filter:brightness(1.08);}
 
-  .radio-pick{display:flex;gap:10px;margin-top:4px;}
-  .radio-pick label{
-    flex:1;text-align:center;border:1.5px solid var(--line);border-radius:10px;
-    padding:10px;font-size:13.5px;font-weight:600;text-transform:none;color:var(--ink);
-    margin:0;cursor:pointer;background:rgba(255,255,255,0.4);transition:all .15s ease;
+  .radio-pick{
+    display:flex;gap:6px;margin-top:4px;
+    background:rgba(15,34,51,0.06);border:1px solid var(--line);
+    padding:5px;border-radius:14px;
   }
+  .radio-pick label{
+    flex:1;text-align:center;border:none;border-radius:10px;
+    padding:11px 10px;font-size:13.5px;font-weight:700;text-transform:none;color:var(--ink-soft);
+    margin:0;cursor:pointer;background:transparent;transition:all .18s ease;
+  }
+  .radio-pick label:hover{color:var(--ink);}
   .radio-pick input{display:none;}
-  .radio-pick input:checked + span{color:var(--grass-dark);}
-  .radio-pick label.active{border-color:var(--grass);background:rgba(4,163,237,0.12);box-shadow:0 0 0 3px rgba(4,163,237,0.12);}
+  .radio-pick label.active{
+    background:linear-gradient(160deg,var(--grass-light),var(--grass) 60%,var(--grass-dark));
+    color:#fff;
+    box-shadow:0 6px 16px rgba(4,163,237,0.4), inset 0 1px 0 rgba(255,255,255,0.4);
+    transform:translateY(-1px);
+  }
+  .radio-pick label.active::before{content:"✓ ";}
 
   /* ---------- Scoreboard hero ---------- */
   .hero{
